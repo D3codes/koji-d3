@@ -48,6 +48,10 @@ jobs:
                     "resource": "url",
                     "url": "https://raw.githubusercontent.com/WordPress/theme-test-data/master/themeunittestdata.wordpress.xml"
                   }
+                },
+                {
+                  "step": "runPHP",
+                  "code": "<?php\nrequire '/wordpress/wp-load.php';\n\nupdate_option( 'blogname', 'd3.codes' );\nupdate_option( 'blogdescription', '' );\nset_theme_mod( 'koji_pagination_type', 'scroll' );\n\n$sidebars = get_option( 'sidebars_widgets', array() );\nforeach ( array( 'sidebar', 'footer-one', 'footer-two', 'footer-three' ) as $sidebar ) {\n    $sidebars[ $sidebar ] = array();\n}\nupdate_option( 'sidebars_widgets', $sidebars );"
                 }
               ]
             }
