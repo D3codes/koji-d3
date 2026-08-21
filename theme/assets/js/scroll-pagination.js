@@ -8,20 +8,51 @@
 		koji.loadMore.updateHistory = function() {};
 	}
 
-	// Koji's default handler listens for both "scroll" and "load". The load
-	// event makes an oversized viewport behave as though the visitor scrolled.
-	koji.intervalScroll.init = function() {
-		var didScroll = false;
+	// Koji uses the same startup event to reveal page 1 and to check whether
+	// another page should load. Keep the startup event for the initial content,
+	// but require genuine scroll intent before allowing pagination.
+	koji.loadMore.detectScroll = function( $pagination, queryArgs ) {
+		var hasScrollIntent = false;
+		var scrollKeys = [ 32, 34, 35, 40 ]; // Space, Page Down, End, Arrow Down.
+
+		function maybeLoadPosts() {
+			if ( ! hasScrollIntent || window.lastPage || window.loading ) {
+				return;
+			}
+
+			var paginationOffset = $pagination.offset().top;
+			var windowBottom = $( window ).scrollTop() + $( window ).outerHeight();
+
+			if ( windowBottom > paginationOffset ) {
+				hasScrollIntent = false;
+				koji.loadMore.loadPosts( $pagination, queryArgs );
+			}
+		}
 
 		$( window ).on( 'scroll', function() {
-			didScroll = true;
+			if ( $( window ).scrollTop() > 0 ) {
+				hasScrollIntent = true;
+			}
 		} );
 
-		setInterval( function() {
-			if ( didScroll ) {
-				didScroll = false;
-				$( window ).triggerHandler( 'did-interval-scroll' );
+		$( window ).on( 'wheel touchmove', function( event ) {
+			if ( event.type === 'touchmove' || ! event.originalEvent || event.originalEvent.deltaY > 0 ) {
+				hasScrollIntent = true;
+				maybeLoadPosts();
 			}
-		}, 250 );
+		} );
+
+		$( document ).on( 'keydown', function( event ) {
+			if ( $( event.target ).is( 'input, textarea, select, [contenteditable]' ) ) {
+				return;
+			}
+
+			if ( scrollKeys.indexOf( event.which ) !== -1 ) {
+				hasScrollIntent = true;
+				maybeLoadPosts();
+			}
+		} );
+
+		$( window ).on( 'did-interval-scroll', maybeLoadPosts );
 	};
 }( jQuery ) );
