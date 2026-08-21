@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "theme/**"
+  workflow_dispatch:
 
 concurrency:
   group: production-theme
@@ -21,46 +22,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure SSH
-        env:
-          DEPLOY_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          DEPLOY_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
-          DEPLOY_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
-        run: |
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
-          key_file="$RUNNER_TEMP/deploy_key"
-          askpass_file="$RUNNER_TEMP/ssh_askpass"
-
-          printf '%s\n' "$DEPLOY_PRIVATE_KEY" > "$key_file"
-          chmod 600 "$key_file"
-
-          printf '%s\n' \
-            '#!/bin/sh' \
-            'printf "%s\n" "$DEPLOY_KEY_PASSPHRASE"' \
-            > "$askpass_file"
-          chmod 700 "$askpass_file"
-
-          eval "$(ssh-agent -s)"
-          SSH_ASKPASS="$askpass_file" \
-          SSH_ASKPASS_REQUIRE=force \
-          DISPLAY=:0 \
-          ssh-add "$key_file" < /dev/null
-
-          rm -f "$key_file" "$askpass_file"
-
-          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> "$GITHUB_ENV"
-
       - name: Sync theme files
-        env:
-          DEPLOY_HOST: ${{ secrets.SSH_HOST }}
-          DEPLOY_PORT: ${{ secrets.SSH_PORT }}
-          DEPLOY_USER: ${{ secrets.SSH_USER }}
-          DEPLOY_PATH: ${{ secrets.THEME_PATH }}
-        run: |
-          rsync -az --delete \
-            --exclude=".DS_Store" \
-            -e "ssh -p $DEPLOY_PORT -o StrictHostKeyChecking=yes" \
-            theme/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTPS_HOST }}
+          username: ${{ secrets.FTPS_USERNAME }}
+          password: ${{ secrets.FTPS_PASSWORD }}
+          protocol: ftps
+          port: 21
+          security: strict
+          local-dir: ./theme/
+          server-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.DS_Store
