@@ -8,6 +8,23 @@
 		koji.loadMore.updateHistory = function() {};
 	}
 
+	// Koji focuses the first title in each appended page. Keep that focus for
+	// keyboard and assistive-technology users, but prevent the browser from
+	// scrolling the newly focused title to the top of the viewport.
+	var kojiFocus = $.fn.focus;
+	$.fn.focus = function() {
+		var $target = this.first();
+		var isAppendedPostTitle = $target.is( '.preview-title a' ) &&
+			$target.closest( '[class*="post-from-page-"]' ).length;
+
+		if ( arguments.length === 0 && $( 'body' ).hasClass( 'pagination-type-scroll' ) && isAppendedPostTitle ) {
+			$target.get( 0 ).focus( { preventScroll: true } );
+			return this;
+		}
+
+		return kojiFocus.apply( this, arguments );
+	};
+
 	// Koji uses the same startup event to reveal page 1 and to check whether
 	// another page should load. Keep the startup event for the initial content,
 	// but require genuine scroll intent before allowing pagination.
