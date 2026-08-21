@@ -1,0 +1,46 @@
+name: WordPress Playground preview
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited]
+    paths:
+      - "theme/**"
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: WordPress/action-wp-playground-pr-preview@v3
+        with:
+          blueprint: |
+            {
+              "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+              "steps": [
+                {
+                  "step": "installTheme",
+                  "themeData": {
+                    "resource": "wordpress.org/themes",
+                    "slug": "koji"
+                  }
+                },
+                {
+                  "step": "installTheme",
+                  "themeData": {
+                    "resource": "git:directory",
+                    "url": "https://github.com/${{ github.repository }}",
+                    "ref": "refs/pull/${{ github.event.pull_request.number }}/head",
+                    "refType": "refname",
+                    "path": "theme"
+                  },
+                  "options": {
+                    "activate": true
+                  }
+                }
+              ]
+            }
+          github-token: ${{ secrets.GITHUB_TOKEN }}

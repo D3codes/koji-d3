@@ -1,0 +1,143 @@
+/*
+Theme Name: Koji D3
+Template: koji
+Version: 1.0.0
+Text Domain: koji-d3
+*/
+
+/* START - 404 Page */
+.error-404-image {
+	width: 1000px;
+	margin: 2rem 0;
+}
+/* END - 404 Page */
+
+/* START - Hide elements */
+.show, .hide {
+	display: none;
+}
+
+.featured-media {
+	display: none;
+}
+
+.widget-content a {
+	text-decoration: none;
+}
+
+#site-header {
+  /* For Internet Explorer and Edge */
+  -ms-overflow-style: none;
+  /* For Firefox */
+  scrollbar-width: none;
+}
+
+/* For Chrome, Safari, and Opera */
+#site-header::-webkit-scrollbar {
+  display: none;
+}
+/* END - Hide elements */
+
+/* START - Social Links */
+.s-icons a[href*="mas.to"]::before { content: '\f4f6'; font-family: 'Font Awesome 6 Brands'; }
+
+.s-icons a[href*="d3.codes"]::before {
+content: '\f09e';
+font-family: 'Font Awesome 6';
+}
+/* END - Social Links */
+
+/* START - Post layout */
+@media (min-width: 1000px) {
+  .post-inner,
+  .has-post-thumbnail .post-inner {
+    padding: 8rem 4rem;
+  }
+}
+
+.post-inner {
+	max-width: 100rem;
+}
+
+.post-title {
+	font-size: 5.0rem;
+}
+
+.header-top {
+	padding: 2rem 0;
+}
+/* END - Post layout */
+
+/* START - Wave animation */
+.wave {
+    display: inline-block;
+    animation: animate-wave 500ms infinite ease-in-out;
+}
+
+@keyframes animate-wave {
+    0% { transform: rotate(0); }
+    50% { transform: rotate(30deg); }
+    100% { transform: rotate(0); }
+}
+/* END - Wave animation */
+
+/* START - Buy me coffee */
+.bmc-btn svg {
+	height: 28px !important;
+}
+
+.bmc-btn {
+	min-width: 180px !important;
+	font-size: 16px !important;
+	border-radius: 200px !important;
+}
+/* END - Buy me coffee */
+
+/* START - Nav menu selector */
+.site-nav a:hover,
+.site-nav .current-menu-item > a,
+.current-menu-item > a,
+.current-page-item > a {
+	text-decoration: none;
+	background: rgba(40, 38, 35, 0.08);
+	border-radius: 20px;
+	display: inline-block;
+	padding: 4px 10px;
+	margin: -4px -10px;
+}
+/* END - Nav menu selector */
+
+/* START - Logo */
+.custom-logo-link > img {
+	width: 100px;
+}
+/* END - Logo */
+
+/* START - Search */
+.search-overlay {
+	background: rgba(200, 200, 200, 0.8);
+}
+
+.search-overlay-form-wrapper {
+	background: white;
+	border-radius: 100px;
+	width: 50rem;
+	padding: 10px;
+}
+
+.search-overlay label img {
+	width: 3.2rem;
+}
+
+.search-overlay .search-field {
+	font-size: 2.4rem;
+}
+
+.search-untoggle-inner {
+	background: white;
+}
+
+input[type="search"]:focus {
+	outline: none;
+}
+/* END - Search */
