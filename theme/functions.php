@@ -23,5 +23,13 @@ function koji_d3_enqueue_scroll_pagination_fix() {
 		filemtime( get_stylesheet_directory() . '/assets/js/scroll-pagination.js' ),
 		true
 	);
+
+	wp_localize_script(
+		'koji-d3-scroll-pagination',
+		'kojiD3Pagination',
+		array(
+			'preserveHomeUrl' => is_home() || is_front_page(),
+		)
+	);
 }
 add_action( 'wp_enqueue_scripts', 'koji_d3_enqueue_scroll_pagination_fix', 20 );
