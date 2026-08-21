@@ -8,26 +8,37 @@
 		koji.loadMore.updateHistory = function() {};
 	}
 
-	// Koji's default handler listens for both "scroll" and "load". The load
-	// event makes an oversized viewport behave as though the visitor scrolled.
-	koji.intervalScroll.init = function() {
-		var didScroll = false;
+	// Koji uses the same startup event to reveal page 1 and to check whether
+	// another page should load. Keep the startup event for the initial content,
+	// but require genuine scroll intent before allowing pagination.
+	koji.loadMore.detectScroll = function( $pagination, queryArgs ) {
+		var hasScrollIntent = false;
 		var scrollKeys = [ 32, 34, 35, 40 ]; // Space, Page Down, End, Arrow Down.
 
+		function maybeLoadPosts() {
+			if ( ! hasScrollIntent || window.lastPage || window.loading ) {
+				return;
+			}
+
+			var paginationOffset = $pagination.offset().top;
+			var windowBottom = $( window ).scrollTop() + $( window ).outerHeight();
+
+			if ( windowBottom > paginationOffset ) {
+				hasScrollIntent = false;
+				koji.loadMore.loadPosts( $pagination, queryArgs );
+			}
+		}
+
 		$( window ).on( 'scroll', function() {
-			// Some browsers emit a scroll event at page load even though the
-			// viewport is still at the top. Ignore that synthetic startup event.
 			if ( $( window ).scrollTop() > 0 ) {
-				didScroll = true;
+				hasScrollIntent = true;
 			}
 		} );
 
-		// A page can be shorter than an oversized viewport, so a genuine scroll
-		// attempt might not change scrollTop. Treat explicit user gestures as a
-		// scroll even when the document itself cannot move yet.
 		$( window ).on( 'wheel touchmove', function( event ) {
 			if ( event.type === 'touchmove' || ! event.originalEvent || event.originalEvent.deltaY > 0 ) {
-				didScroll = true;
+				hasScrollIntent = true;
+				maybeLoadPosts();
 			}
 		} );
 
@@ -37,15 +48,11 @@
 			}
 
 			if ( scrollKeys.indexOf( event.which ) !== -1 ) {
-				didScroll = true;
+				hasScrollIntent = true;
+				maybeLoadPosts();
 			}
 		} );
 
-		setInterval( function() {
-			if ( didScroll ) {
-				didScroll = false;
-				$( window ).triggerHandler( 'did-interval-scroll' );
-			}
-		}, 250 );
+		$( window ).on( 'did-interval-scroll', maybeLoadPosts );
 	};
 }( jQuery ) );
