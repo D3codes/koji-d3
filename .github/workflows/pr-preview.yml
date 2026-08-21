@@ -6,6 +6,7 @@ on:
     types: [opened, synchronize, reopened, edited]
     paths:
       - "theme/**"
+      - ".github/workflows/pr-preview.yml"
 
 jobs:
   preview:
