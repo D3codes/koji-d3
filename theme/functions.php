@@ -10,6 +10,17 @@ function koji_d3_enqueue_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'koji_d3_enqueue_styles', 20 );
 
+function koji_d3_enqueue_aqua2() {
+	wp_enqueue_script(
+		'koji-d3-aqua2',
+		get_stylesheet_directory_uri() . '/aqua2.js',
+		array(),
+		filemtime( get_stylesheet_directory() . '/aqua2.js' ),
+		false
+	);
+}
+add_action( 'wp_enqueue_scripts', 'koji_d3_enqueue_aqua2', 20 );
+
 /**
  * Prevent Koji's infinite-scroll check from running on the window load event.
  * The parent theme treats that event as a scroll, which can load page 2 before
