@@ -5,6 +5,13 @@ Version: 1.0.0
 Text Domain: koji-d3
 */
 
+/* Consistent media corners; preview wrappers already clip their images. */
+img:not(.preview-wrapper img):not(.meta-icon img),
+iframe,
+video {
+	border-radius: 0.8rem;
+}
+
 /* START - 404 Page */
 .error-404-image {
 	width: 1000px;

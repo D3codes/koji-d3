@@ -8,6 +8,8 @@ The Koji parent theme must be installed separately.
 
 - Custom layout, typography, icons, responsive styles, footer, search form, and
   404 page.
+- Consistent rounded corners on images, videos, and embedded frames, with
+  preview images and metadata icons excluded from the image rule.
 - Homepage and search posts without featured images display text previews
   instead of placeholder images. Both the title and excerpt link to the post.
 - Configurable homepage tabs show selected categories, all categories, or all
