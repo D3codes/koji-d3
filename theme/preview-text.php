@@ -1,5 +1,5 @@
 <?php
-/** Homepage preview for posts without a featured image. */
+/** Homepage and search preview for posts without a featured image. */
 ?>
 <article <?php post_class( 'preview preview-' . get_post_type() . ' preview-text do-spot' ); ?> id="post-<?php the_ID(); ?>">
 	<div class="preview-wrapper">
