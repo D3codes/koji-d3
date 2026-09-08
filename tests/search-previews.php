@@ -14,6 +14,21 @@ $html = ob_get_clean();
 if ( false === strpos( $html, 'A recognizable excerpt.' ) || false === strpos( $html, 'preview-text' ) || false !== strpos( $html, 'preview-image' ) ) {
 	throw new RuntimeException( 'Search result must show text without a placeholder.' );
 }
+$document = new DOMDocument();
+@$document->loadHTML( $html );
+$xpath = new DOMXPath( $document );
+$links = $xpath->query( '//a[@class="preview-excerpt"]' );
+if ( 1 !== $links->length || get_permalink($id) !== $links->item(0)->getAttribute('href') || false === strpos($links->item(0)->textContent, 'A recognizable excerpt.') ) {
+	throw new RuntimeException( 'Excerpt text must be inside a link to the post.' );
+}
+$query->is_search = false;
+$query->is_home = true;
+ob_start(); get_template_part( 'preview', 'text' ); $home_html = ob_get_clean();
+if ( false === strpos($home_html, '<a class="preview-excerpt"') ) {
+	throw new RuntimeException( 'Homepage excerpts must also link to the post.' );
+}
+$query->is_home = false;
+$query->is_search = true;
 koji_d3_enqueue_home_tabs();
 if ( ! wp_script_is( 'koji-d3-home-tabs', 'enqueued' ) || false === strpos( get_pagenum_link( 2, false ), 's=Search' ) ) {
 	throw new RuntimeException( 'Search pagination must retain the search query and HTML loader.' );

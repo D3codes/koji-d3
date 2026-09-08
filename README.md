@@ -17,7 +17,7 @@ must be installed separately for the theme to work.
 
 - Site-specific layout, typography, icons, and responsive styles.
 - Homepage and search posts without featured images show their title and excerpt without a
-  placeholder image, including posts appended by infinite scrolling.
+  placeholder image; both the title and excerpt link to the post, including posts appended by infinite scrolling.
 - Custom footer, search form, pagination, and 404 templates.
 - Infinite scrolling that waits for genuine scroll intent, including in browser
   windows taller than the initial page.
@@ -62,12 +62,12 @@ supports 20 tabs; ordering uses buttons rather than dragging, and each tab has a
 remaining tab becomes the default. Category selection is hidden for All categories.
 The editor requires JavaScript; public tab navigation and pagination do not.
 
-Each new tab gets an immutable generated identifier, displayed in the editor,
-such as `tab-a1b2c3d4`. Its URL is `/?tab=tab-a1b2c3d4`; renaming it preserves
-bookmarks. The default tab links to `/`. Page links retain the identifier, e.g.
-`/page/2/?tab=tab-a1b2c3d4` (or `?paged=2&tab=...` with plain permalinks).
-Invalid/deleted tab identifiers fall back to the selected default. On sites with a
-static front page, tabs appear on the configured posts page and use its URL.
+Tab URLs use the actual name, such as `/?tab=Reading%20List`. Names must be
+non-empty and unique (ignoring letter case). Renaming a tab changes its URL.
+The default tab links to `/`. Pagination retains the name, for example
+`/page/2/?tab=Reading%20List`. Old generated-ID bookmarks still resolve.
+Invalid/deleted names fall back to the selected default. On sites with a
+static front page, tabs use the configured posts page URL.
 No permalink flush is needed.
 
 Filters use category IDs with exact selected-category matching (select child

@@ -69,10 +69,18 @@ font-family: 'Font Awesome 6';
 /* END - Post layout */
 
 .preview-excerpt {
+	display: block;
+	color: inherit;
+	text-decoration: none;
 	font-size: 1.6rem;
 	line-height: 1.6;
 	overflow-wrap: anywhere;
 	margin-bottom: 1.6rem;
+}
+
+.preview-excerpt:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 4px;
 }
 
 .preview-excerpt p:last-child {
