@@ -4,8 +4,10 @@
 	api.control( 'koji_d3_home_tabs', function( control ) {
 		var tabs = control.setting.get();
 		tabs = Array.isArray( tabs ) ? JSON.parse( JSON.stringify( tabs ) ) : [];
+		if ( tabs.length && ! tabs.some( function( tab ) { return tab.default; } ) ) { tabs[0].default = true; }
 		var editor = control.container.find( '.home-tabs-editor' );
 		function save() {
+			if ( tabs.length && ! tabs.some( function( tab ) { return tab.default; } ) ) { tabs[0].default = true; }
 			control.setting.set( JSON.parse( JSON.stringify( tabs ) ) );
 		}
 		function render( focusIndex ) {
@@ -13,6 +15,14 @@
 			tabs.forEach( function( tab, index ) {
 				var row = $( '<fieldset class="home-tab-editor">' ).appendTo( editor );
 				$( '<legend>' ).text( ( index + 1 ) + '. ' + ( tab.label || __( 'Untitled tab', 'koji-d3' ) ) ).appendTo( row );
+				var defaultLabel = $( '<label>' ).appendTo( row );
+				$( '<input type="checkbox" class="home-tab-default">' ).prop( 'checked', !! tab.default ).appendTo( defaultLabel ).on( 'change', function() {
+					// Exactly one default: choosing another tab clears the old selection.
+					tabs.forEach( function( item ) { item.default = item.id === tab.id; } );
+					editor.find( '.home-tab-default' ).each( function( i ) { this.checked = !! tabs[i].default; } );
+					save();
+				} );
+				defaultLabel.append( document.createTextNode( __( 'Default tab', 'koji-d3' ) ) );
 				var nameLabel = $( '<label>' ).text( __( 'Name', 'koji-d3' ) ).appendTo( row );
 				$( '<input type="text" class="home-tab-name">' ).val( tab.label ).appendTo( nameLabel ).on( 'input', function() {
 					tab.label = this.value;
@@ -47,7 +57,7 @@
 				[ [ -1, __( 'Move up', 'koji-d3' ) ], [ 1, __( 'Move down', 'koji-d3' ) ] ].forEach( function( move ) {
 					$( '<button type="button" class="button">' ).text( move[1] ).prop( 'disabled', index + move[0] < 0 || index + move[0] >= tabs.length ).appendTo( actions ).on( 'click', function() {
 						tabs.splice( index, 1 ); tabs.splice( index + move[0], 0, tab ); save(); render( index + move[0] );
-						control.container.find( '.home-tabs-status' ).text( __( 'Tab moved. The first tab is the default.', 'koji-d3' ) );
+						control.container.find( '.home-tabs-status' ).text( __( 'Tab moved. The selected default is unchanged.', 'koji-d3' ) );
 					} );
 				} );
 				$( '<button type="button" class="button">' ).text( __( 'Remove', 'koji-d3' ) ).appendTo( actions ).on( 'click', function() {

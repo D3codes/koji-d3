@@ -6,6 +6,7 @@ function koji_d3_sanitize_home_tabs( $value ) {
 	}
 	$tabs = array();
 	$seen = array();
+	$has_default = false;
 	foreach ( is_array( $value ) ? array_slice( $value, 0, 20 ) : array() as $tab ) {
 		if ( ! is_array( $tab ) ) {
 			continue;
@@ -22,7 +23,9 @@ function koji_d3_sanitize_home_tabs( $value ) {
 				$categories[] = (int) $category;
 			}
 		}
-		$tabs[] = array( 'id' => $id, 'label' => $label, 'mode' => $mode, 'categories' => array_values( array_unique( $categories ) ) );
+		$is_default = ! $has_default && isset( $tab['default'] ) && true === $tab['default'];
+		$has_default = $has_default || $is_default;
+		$tabs[] = array( 'default' => $is_default, 'id' => $id, 'label' => $label, 'mode' => $mode, 'categories' => array_values( array_unique( $categories ) ) );
 		$seen[ $id ] = true;
 	}
 	return $tabs;
@@ -31,6 +34,16 @@ function koji_d3_sanitize_home_tabs( $value ) {
 function koji_d3_home_tabs() {
 	return get_theme_mod( 'koji_d3_home_tabs_enabled', true )
 		? koji_d3_sanitize_home_tabs( get_theme_mod( 'koji_d3_home_tabs', array() ) ) : array();
+}
+
+/** Old configurations and removed defaults safely fall back to the first tab. */
+function koji_d3_default_home_tab( $tabs ) {
+	foreach ( $tabs as $tab ) {
+		if ( ! empty( $tab['default'] ) ) {
+			return $tab;
+		}
+	}
+	return $tabs ? $tabs[0] : null;
 }
 
 function koji_d3_active_home_tab() {
@@ -42,7 +55,7 @@ function koji_d3_active_home_tab() {
 			return $tab;
 		}
 	}
-	return $tabs ? $tabs[0] : null;
+	return koji_d3_default_home_tab( $tabs );
 }
 
 function koji_d3_is_home_tab_query( $query ) {
@@ -88,8 +101,9 @@ function koji_d3_render_home_tabs() {
 	}
 	$tabs = koji_d3_home_tabs();
 	echo '<nav class="home-tabs" aria-label="' . esc_attr__( 'Post filters', 'koji-d3' ) . '">';
-	foreach ( $tabs as $index => $tab ) {
-		$url = 0 === $index ? koji_d3_home_tabs_url() : add_query_arg( 'tab', $tab['id'], koji_d3_home_tabs_url() );
+	$default = koji_d3_default_home_tab( $tabs );
+	foreach ( $tabs as $tab ) {
+		$url = $default['id'] === $tab['id'] ? koji_d3_home_tabs_url() : add_query_arg( 'tab', $tab['id'], koji_d3_home_tabs_url() );
 		echo '<a href="' . esc_url( $url ) . '"' . ( $active['id'] === $tab['id'] ? ' aria-current="page"' : '' ) . '>' . esc_html( $tab['label'] ) . '</a>';
 	}
 	echo '</nav>';
@@ -102,7 +116,8 @@ function koji_d3_home_tab_page_link( $url ) {
 	}
 	$tabs = koji_d3_home_tabs();
 	$url = remove_query_arg( 'tab', $url );
-	return $tabs[0]['id'] === $tab['id'] ? $url : add_query_arg( 'tab', $tab['id'], $url );
+	$default = koji_d3_default_home_tab( $tabs );
+	return $default['id'] === $tab['id'] ? $url : add_query_arg( 'tab', $tab['id'], $url );
 }
 add_filter( 'get_pagenum_link', 'koji_d3_home_tab_page_link' );
 

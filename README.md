@@ -50,20 +50,21 @@ step.
 Open **Appearance → Customize → Homepage Tabs**, leave **Show homepage tab bar**
 checked, and choose **Add tab**. Edit each name, choose **Specific categories**,
 **All categories**, or **All except**, and check the categories to include or
-exclude. Use **Move up / Move down** to order tabs; the first tab is the default.
+exclude. Check **Default tab** on the tab that should open at the homepage URL. Only one
+tab can be selected. Use **Move up / Move down** to order tabs independently.
 Choose **Publish** to save. Remove deletes a tab from the configuration.
 
 There are no predefined tabs. Until at least one named tab is saved, the homepage
 is unchanged. Disabling the feature also restores the normal feed. The editor
-supports 20 tabs; ordering uses buttons rather than dragging, and the first tab
-serves as the default selector. Category selection is hidden for All categories.
+supports 20 tabs; ordering uses buttons rather than dragging, and each tab has a default checkbox. If the default is removed, the first
+remaining tab becomes the default. Category selection is hidden for All categories.
 The editor requires JavaScript; public tab navigation and pagination do not.
 
 Each new tab gets an immutable generated identifier, displayed in the editor,
 such as `tab-a1b2c3d4`. Its URL is `/?tab=tab-a1b2c3d4`; renaming it preserves
 bookmarks. The default tab links to `/`. Page links retain the identifier, e.g.
 `/page/2/?tab=tab-a1b2c3d4` (or `?paged=2&tab=...` with plain permalinks).
-Invalid/deleted tab identifiers fall back to the first tab. On sites with a
+Invalid/deleted tab identifiers fall back to the selected default. On sites with a
 static front page, tabs appear on the configured posts page and use its URL.
 No permalink flush is needed.
 
@@ -97,7 +98,8 @@ Files added:
 Files modified:
 
 - `theme/functions.php`: loads the two feature modules.
-- `theme/style.css`: wrapping navigation and active/focus states.
+- `theme/style.css`: centered sticky navigation, oval active/hover styling matching the sidebar,
+  and keyboard focus states.
 - `theme/pagination.php`: retains a previous-page link on the last filtered page.
 - `README.md`: configuration, architecture, file inventory and verification notes.
 

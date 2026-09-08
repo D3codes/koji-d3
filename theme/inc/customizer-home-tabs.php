@@ -14,7 +14,7 @@ function koji_d3_register_home_tabs_customizer( $wp_customize ) {
 		public function render_content() {
 			?>
 			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-			<p><?php esc_html_e( 'The first tab is the default. Add up to 20 tabs, then use Move up or Move down to set their order. Name changes preserve bookmarked URLs. Publish to save.', 'koji-d3' ); ?></p>
+			<p><?php esc_html_e( 'Check Default tab on the tab to show first when visiting the homepage. Only one tab can be the default. Add up to 20 tabs, then use Move up or Move down to set their order. Name changes preserve bookmarked URLs. Publish to save.', 'koji-d3' ); ?></p>
 			<div class="home-tabs-editor"></div>
 			<button type="button" class="button home-tabs-add"><?php esc_html_e( 'Add tab', 'koji-d3' ); ?></button>
 			<p class="home-tabs-status screen-reader-text" aria-live="polite"></p>
