@@ -1,5 +1,8 @@
 <?php
 
+require_once get_stylesheet_directory() . '/inc/home-tabs.php';
+require_once get_stylesheet_directory() . '/inc/customizer-home-tabs.php';
+
 function koji_d3_enqueue_styles() {
     wp_enqueue_style(
         'koji-d3-style',

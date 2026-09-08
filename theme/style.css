@@ -141,3 +141,30 @@ input[type="search"]:focus {
 	outline: none;
 }
 /* END - Search */
+/* Homepage category navigation */
+.home-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem 2rem;
+	margin: 0 0 3rem;
+	padding-top: 2rem;
+}
+
+.home-tabs a {
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	padding: 0.8rem 0;
+	color: inherit;
+	text-decoration: none;
+	border-bottom: 2px solid transparent;
+}
+
+.home-tabs a[aria-current="page"],
+.home-tabs a:hover {
+	border-bottom-color: currentColor;
+}
+
+.home-tabs a:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 4px;
+}
