@@ -5,9 +5,10 @@
 	<div class="preview-wrapper">
 		<div class="preview-inner">
 			<h2 class="preview-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-			<div class="preview-excerpt">
-				<?php the_excerpt(); ?>
-			</div>
+			<a class="preview-excerpt" href="<?php the_permalink(); ?>">
+				<?php // Preserve excerpt formatting without nesting links or interactive elements.
+				echo wp_kses( apply_filters( 'the_excerpt', get_the_excerpt() ), array( 'p' => array(), 'br' => array(), 'em' => array(), 'strong' => array() ) ); ?>
+			</a>
 			<?php koji_the_post_meta( get_the_ID(), 'preview' ); ?>
 		</div>
 	</div>

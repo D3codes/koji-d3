@@ -8,9 +8,8 @@
 		koji.loadMore.updateHistory = function() {};
 	}
 
-	// Koji focuses the first title in each appended page. Keep that focus for
-	// keyboard and assistive-technology users, but prevent the browser from
-	// scrolling the newly focused title to the top of the viewport.
+	// Automatic loading should not move focus or highlight an appended post.
+	// Keep normal focus behavior for keyboard navigation and manual Load more.
 	var kojiFocus = $.fn.focus;
 	$.fn.focus = function() {
 		var $target = this.first();
@@ -18,7 +17,6 @@
 			$target.closest( '[class*="post-from-page-"]' ).length;
 
 		if ( arguments.length === 0 && $( 'body' ).hasClass( 'pagination-type-scroll' ) && isAppendedPostTitle ) {
-			$target.get( 0 ).focus( { preventScroll: true } );
 			return this;
 		}
 

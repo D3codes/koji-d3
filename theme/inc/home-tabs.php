@@ -1,11 +1,33 @@
 <?php
-/** Homepage category filters. IDs are independent of editable labels. */
+/** Homepage category filters. Internal IDs preserve default selection and old links. */
+function koji_d3_home_tab_name_key( $label ) {
+	$label = sanitize_text_field( $label );
+	return function_exists( 'mb_strtolower' ) ? mb_strtolower( $label, 'UTF-8' ) : strtolower( $label );
+}
+
+/** Reject ambiguous names before the Customizer saves the setting. */
+function koji_d3_validate_home_tabs( $validity, $value ) {
+	if ( is_string( $value ) ) {
+		$value = json_decode( $value, true );
+	}
+	$names = array();
+	foreach ( is_array( $value ) ? $value : array() as $tab ) {
+		$name = isset( $tab['label'] ) && is_string( $tab['label'] ) ? koji_d3_home_tab_name_key( $tab['label'] ) : '';
+		if ( '' === $name || isset( $names[ $name ] ) ) {
+			$validity->add( 'tab_names', __( 'Each tab needs a unique, non-empty name (ignoring letter case).', 'koji-d3' ) );
+			break;
+		}
+		$names[ $name ] = true;
+	}
+	return $validity;
+}
 function koji_d3_sanitize_home_tabs( $value ) {
 	if ( is_string( $value ) ) {
 		$value = json_decode( $value, true );
 	}
 	$tabs = array();
 	$seen = array();
+	$names = array();
 	$has_default = false;
 	foreach ( is_array( $value ) ? array_slice( $value, 0, 20 ) : array() as $tab ) {
 		if ( ! is_array( $tab ) ) {
@@ -13,8 +35,9 @@ function koji_d3_sanitize_home_tabs( $value ) {
 		}
 		$id = isset( $tab['id'] ) && is_string( $tab['id'] ) ? sanitize_key( $tab['id'] ) : '';
 		$label = isset( $tab['label'] ) && is_string( $tab['label'] ) ? sanitize_text_field( $tab['label'] ) : '';
+		$name = koji_d3_home_tab_name_key( $label );
 		$mode = isset( $tab['mode'] ) && in_array( $tab['mode'], array( 'include', 'all', 'exclude' ), true ) ? $tab['mode'] : '';
-		if ( ! $id || ! $label || ! $mode || isset( $seen[ $id ] ) ) {
+		if ( ! $id || ! $label || ! $mode || isset( $seen[ $id ] ) || isset( $names[ $name ] ) ) {
 			continue;
 		}
 		$categories = array();
@@ -27,6 +50,7 @@ function koji_d3_sanitize_home_tabs( $value ) {
 		$has_default = $has_default || $is_default;
 		$tabs[] = array( 'default' => $is_default, 'id' => $id, 'label' => $label, 'mode' => $mode, 'categories' => array_values( array_unique( $categories ) ) );
 		$seen[ $id ] = true;
+		$names[ $name ] = true;
 	}
 	return $tabs;
 }
@@ -49,9 +73,15 @@ function koji_d3_default_home_tab( $tabs ) {
 function koji_d3_active_home_tab() {
 	$tabs = koji_d3_home_tabs();
 	// This value only selects a saved definition; it never becomes a query argument.
-	$id = isset( $_GET['tab'] ) && is_string( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+	$name = isset( $_GET['tab'] ) && is_string( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 	foreach ( $tabs as $tab ) {
-		if ( $tab['id'] === $id ) {
+		if ( koji_d3_home_tab_name_key( $tab['label'] ) === koji_d3_home_tab_name_key( $name ) ) {
+			return $tab;
+		}
+	}
+	// Continue accepting old bookmarks, but always generate name-based links.
+	foreach ( $tabs as $tab ) {
+		if ( $tab['id'] === $name ) {
 			return $tab;
 		}
 	}
@@ -103,7 +133,7 @@ function koji_d3_render_home_tabs() {
 	echo '<nav class="home-tabs" aria-label="' . esc_attr__( 'Post filters', 'koji-d3' ) . '">';
 	$default = koji_d3_default_home_tab( $tabs );
 	foreach ( $tabs as $tab ) {
-		$url = $default['id'] === $tab['id'] ? koji_d3_home_tabs_url() : add_query_arg( 'tab', $tab['id'], koji_d3_home_tabs_url() );
+		$url = $default['id'] === $tab['id'] ? koji_d3_home_tabs_url() : add_query_arg( 'tab', rawurlencode( $tab['label'] ), koji_d3_home_tabs_url() );
 		echo '<a href="' . esc_url( $url ) . '"' . ( $active['id'] === $tab['id'] ? ' aria-current="page"' : '' ) . '>' . esc_html( $tab['label'] ) . '</a>';
 	}
 	echo '</nav>';
@@ -117,7 +147,7 @@ function koji_d3_home_tab_page_link( $url ) {
 	$tabs = koji_d3_home_tabs();
 	$url = remove_query_arg( 'tab', $url );
 	$default = koji_d3_default_home_tab( $tabs );
-	return $default['id'] === $tab['id'] ? $url : add_query_arg( 'tab', $tab['id'], $url );
+	return $default['id'] === $tab['id'] ? $url : add_query_arg( 'tab', rawurlencode( $tab['label'] ), $url );
 }
 add_filter( 'get_pagenum_link', 'koji_d3_home_tab_page_link' );
 

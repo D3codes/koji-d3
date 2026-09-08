@@ -8,6 +8,14 @@
 		var editor = control.container.find( '.home-tabs-editor' );
 		function save() {
 			if ( tabs.length && ! tabs.some( function( tab ) { return tab.default; } ) ) { tabs[0].default = true; }
+			var names = tabs.map( function( tab ) { return tab.label.trim().replace( /\s+/g, ' ' ).toLowerCase(); } );
+			var invalid = names.some( function( name, index ) { return ! name || names.indexOf( name ) !== index; } );
+			control.setting.notifications.remove( 'tab_names' );
+			if ( invalid ) {
+				control.setting.notifications.add( 'tab_names', new api.Notification( 'tab_names', {
+					type: 'error', message: __( 'Each tab needs a unique, non-empty name (ignoring letter case).', 'koji-d3' )
+				} ) );
+			}
 			control.setting.set( JSON.parse( JSON.stringify( tabs ) ) );
 		}
 		function render( focusIndex ) {
@@ -26,10 +34,11 @@
 				var nameLabel = $( '<label>' ).text( __( 'Name', 'koji-d3' ) ).appendTo( row );
 				$( '<input type="text" class="home-tab-name">' ).val( tab.label ).appendTo( nameLabel ).on( 'input', function() {
 					tab.label = this.value;
+					row.find( '.home-tab-url' ).text( '?tab=' + encodeURIComponent( this.value.trim() ) );
 					row.find( 'legend' ).text( ( index + 1 ) + '. ' + this.value );
 					save();
 				} );
-				$( '<p class="description">' ).text( __( 'URL identifier: ', 'koji-d3' ) + tab.id ).appendTo( row );
+				$( '<p class="description home-tab-url">' ).text( '?tab=' + encodeURIComponent( tab.label ) ).appendTo( row );
 				var modeLabel = $( '<label>' ).text( __( 'Filter mode', 'koji-d3' ) ).appendTo( row );
 				var mode = $( '<select>' ).appendTo( modeLabel );
 				[ [ 'include', __( 'Specific categories', 'koji-d3' ) ], [ 'all', __( 'All categories', 'koji-d3' ) ], [ 'exclude', __( 'All except', 'koji-d3' ) ] ].forEach( function( option ) {
@@ -72,7 +81,9 @@
 			if ( tabs.length >= 20 ) { return; }
 			var id;
 			do { id = 'tab-' + Math.random().toString( 36 ).slice( 2, 10 ); } while ( tabs.some( function( tab ) { return tab.id === id; } ) );
-			tabs.push( { id: id, label: __( 'New tab', 'koji-d3' ), mode: 'all', categories: [] } );
+			var label = __( 'New tab', 'koji-d3' ), suffix = 2;
+			while ( tabs.some( function( tab ) { return tab.label.trim().toLowerCase() === label.toLowerCase(); } ) ) { label = __( 'New tab', 'koji-d3' ) + ' ' + suffix++; }
+			tabs.push( { id: id, label: label, mode: 'all', categories: [] } );
 			save(); render( tabs.length - 1 );
 		} );
 		render();
