@@ -123,7 +123,7 @@ add_filter( 'get_pagenum_link', 'koji_d3_home_tab_page_link' );
 
 function koji_d3_enqueue_home_tabs() {
 	global $wp_query;
-	if ( ! koji_d3_is_home_tab_query( $wp_query ) || ! koji_d3_active_home_tab() ) {
+	if ( ! koji_d3_is_home_tab_query( $wp_query ) ) {
 		return;
 	}
 	wp_enqueue_script( 'koji-d3-home-tabs', get_stylesheet_directory_uri() . '/assets/js/home-tabs.js', array( 'koji_construct' ), filemtime( get_stylesheet_directory() . '/assets/js/home-tabs.js' ), true );

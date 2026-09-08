@@ -68,6 +68,17 @@ font-family: 'Font Awesome 6';
 }
 /* END - Post layout */
 
+.preview-excerpt {
+	font-size: 1.6rem;
+	line-height: 1.6;
+	overflow-wrap: anywhere;
+	margin-bottom: 1.6rem;
+}
+
+.preview-excerpt p:last-child {
+	margin-bottom: 0;
+}
+
 /* START - Wave animation */
 .wave {
     display: inline-block;

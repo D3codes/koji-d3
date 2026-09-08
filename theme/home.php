@@ -11,7 +11,11 @@ get_header(); ?>
 			if ( have_posts() ) :
 				while ( have_posts() ) :
 					the_post();
-					get_template_part( 'preview', get_post_type() );
+					if ( ! has_post_thumbnail() ) {
+						get_template_part( 'preview', 'text' );
+					} else {
+						get_template_part( 'preview', get_post_type() );
+					}
 				endwhile;
 			endif;
 			?>
