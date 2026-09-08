@@ -10,9 +10,7 @@
 			} else { ?><p><?php esc_html_e( 'No entries yet.', 'koji-d3' ); ?></p><?php }
 			?>
 		</div>
-		<?php if ( get_query_var( 'koji_d3_all' ) || is_post_type_archive( 'link' ) ) {
-			the_posts_pagination( array( 'mid_size' => 2 ) );
-		} else { get_template_part( 'pagination' ); } ?>
+		<?php get_template_part( 'pagination' ); ?>
 	</div>
 </main>
 <?php get_footer(); ?>

@@ -63,14 +63,16 @@ is Links, and `/all/` mixes both by publication date. A configured static home
 page is preserved, with tabs on the configured posts page instead. Plain
 permalinks use WordPress query-string fallbacks.
 
-Posts retain Koji's existing previews and infinite scrolling. Links and All use
-numbered pagination because Koji's AJAX handler rejects mixed post types. The
+All three feeds retain Koji's scroll, button, and ordinary-link pagination modes.
+A child-theme AJAX handler validates public post types, preserves mixed queries,
+and selects each entry's own preview template. The
 primary RSS feed includes both types, including commentary and the external
 preview in full-content and summary feeds. Existing search results exclude Links;
 explicit Link REST requests remain available. Existing posts are never converted.
 
 ### Files added
 
+- `theme/inc/pagination.php`: safe AJAX pagination for individual and mixed post types.
 - `theme/inc/links.php`: content type, URL editor/meta, safe cached preview fetching,
   scoped queries, routing, and RSS rendering.
 - `theme/home.php`: shared feed loop using Koji's existing preview dispatch.
@@ -86,6 +88,8 @@ explicit Link REST requests remain available. Existing posts are never converted
 ### Files modified
 
 - `theme/functions.php`: loads the feature module and image fallback script.
+- `theme/pagination.php`: combined-feed load-more label.
+- `theme/assets/js/scroll-pagination.js`: focus handling for appended Link cards.
 - `theme/style.css`: scoped tabs, cards, images, commentary and pagination styles.
 - `README.md`: workflow, deployment requirements, assumptions and validation.
 

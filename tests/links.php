@@ -64,3 +64,9 @@ d3_check( ! $static_all->is_page() && array( 'post', 'link' ) === $static_all->g
 update_option( 'show_on_front', $old_show );
 update_option( 'page_on_front', $old_front );
 wp_delete_post( $front, true );
+
+$args = koji_d3_pagination_args( array( 'post_type' => array( 'post', 'link' ), 'paged' => 2, 'posts_per_page' => 2, 'ignore_sticky_posts' => true, 'post_status' => 'draft', 'orderby' => 'date', 'order' => 'DESC' ) );
+d3_check( array( 'post', 'link' ) === $args['post_type'] && 2 === $args['paged'] && $args['ignore_sticky_posts'], 'AJAX retains mixed types, page and sticky policy' );
+d3_check( 'publish' === $args['post_status'], 'AJAX cannot request drafts' );
+d3_check( false === koji_d3_pagination_args( array( 'post_type' => array( 'post', 'revision' ) ) ), 'AJAX rejects disallowed post types' );
+d3_check( 'link' === koji_d3_pagination_args( array( 'post_type' => 'link' ) )['post_type'], 'AJAX supports Link-only queries' );

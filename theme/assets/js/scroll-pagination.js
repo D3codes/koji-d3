@@ -14,7 +14,7 @@
 	var kojiFocus = $.fn.focus;
 	$.fn.focus = function() {
 		var $target = this.first();
-		var isAppendedPostTitle = $target.is( '.preview-title a' ) &&
+		var isAppendedPostTitle = $target.is( '.preview-title a, .d3-link-focus' ) &&
 			$target.closest( '[class*="post-from-page-"]' ).length;
 
 		if ( arguments.length === 0 && $( 'body' ).hasClass( 'pagination-type-scroll' ) && isAppendedPostTitle ) {
@@ -24,6 +24,17 @@
 
 		return kojiFocus.apply( this, arguments );
 	};
+
+	// Link previews have their own title markup. Focus the first appended Link
+	// just as Koji focuses normal posts, without jumping during infinite scroll.
+	$( window ).on( 'ajax-content-loaded', function() {
+		var $last = $( '#posts > [class*="post-from-page-"]' ).last();
+		var pageClass = ( $last.attr( 'class' ) || '' ).match( /\bpost-from-page-\d+\b/ );
+		if ( ! pageClass ) { return; }
+		var $first = $( '#posts > .' + pageClass[0] ).first();
+		var target = $first.filter( '.preview-link' ).find( '.d3-link-focus' ).get( 0 );
+		if ( target ) { target.focus( { preventScroll: $( 'body' ).hasClass( 'pagination-type-scroll' ) } ); }
+	} );
 
 	// Koji uses the same startup event to reveal page 1 and to check whether
 	// another page should load. Keep the startup event for the initial content,

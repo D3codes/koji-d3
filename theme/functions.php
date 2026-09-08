@@ -35,6 +35,7 @@ function koji_d3_enqueue_scroll_pagination_fix() {
 add_action( 'wp_enqueue_scripts', 'koji_d3_enqueue_scroll_pagination_fix', 20 );
 
 require_once get_stylesheet_directory() . '/inc/links.php';
+require_once get_stylesheet_directory() . '/inc/pagination.php';
 
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_script( 'koji-d3-link-previews', get_stylesheet_directory_uri() . '/assets/js/link-previews.js', array(), filemtime( get_stylesheet_directory() . '/assets/js/link-previews.js' ), true );

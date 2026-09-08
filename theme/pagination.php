@@ -28,7 +28,9 @@ if ( ! array_key_exists( 'paged', $query_args ) || 0 == $query_args['paged'] ) {
 if ( $query_args['max_num_pages'] > $query_args['paged'] ) :
 
 	// Determine the pagination content type for the load more button.
-	if ( is_search() ) {
+	if ( get_query_var( 'koji_d3_all' ) ) {
+		$load_more_content_type = __( 'entries', 'koji-d3' );
+	} elseif ( is_search() ) {
 		$load_more_content_type = __( 'search results', 'koji' );
 	} else {
 		$post_type = get_post_type() ?: 'post';

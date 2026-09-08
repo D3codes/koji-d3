@@ -126,7 +126,7 @@ function koji_d3_link_preview_html( $id ) {
 	$preview = is_array( $preview ) && ( $preview['url'] ?? '' ) === $url ? $preview : array();
 	$title = get_the_title( $id ) ?: ( $preview['title'] ?? $url );
 	ob_start(); ?>
-	<a class="d3-link-preview" href="<?php echo esc_url( $url ); ?>">
+	<a class="d3-link-preview d3-link-focus" href="<?php echo esc_url( $url ); ?>">
 		<?php if ( has_post_thumbnail( $id ) ) { echo get_the_post_thumbnail( $id, 'large' ); }
 		elseif ( ! empty( $preview['image'] ) ) { ?><img src="<?php echo esc_url( $preview['image'] ); ?>" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"><?php } ?>
 		<span class="d3-link-preview-text">

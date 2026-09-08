@@ -156,6 +156,4 @@ input[type="search"]:focus {
 .d3-link-permalink { font-size: 1.4rem; margin-top: 1.6rem; }
 .d3-single-link .post-inner { margin: auto; padding: 4rem 2rem; }
 .d3-single-link .post-title { margin-bottom: 3rem; overflow-wrap: anywhere; }
-.d3-feed-tabs ~ .navigation.pagination { display: block; margin: 3rem 0; }
-.d3-feed-tabs ~ .navigation.pagination .page-numbers { display: inline-block; padding: 1rem; }
 .d3-link-preview > img[hidden] { display: none; }
