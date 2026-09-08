@@ -2,6 +2,7 @@
 	'use strict';
 	// Koji's AJAX endpoint drops category__in/category__not_in. Retrieve the real
 	// next homepage instead, so both JS and ordinary links use the same main query.
+	// This also preserves homepage text previews when no tabs are configured.
 	// Keep Koji's existing append, Masonry, focus, and scroll behavior.
 	$.ajaxPrefilter( function( options, original ) {
 		if ( ! original.data || original.data.action !== 'koji_ajax_load_more' ) {

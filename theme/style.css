@@ -68,6 +68,17 @@ font-family: 'Font Awesome 6';
 }
 /* END - Post layout */
 
+.preview-excerpt {
+	font-size: 1.6rem;
+	line-height: 1.6;
+	overflow-wrap: anywhere;
+	margin-bottom: 1.6rem;
+}
+
+.preview-excerpt p:last-child {
+	margin-bottom: 0;
+}
+
 /* START - Wave animation */
 .wave {
     display: inline-block;
@@ -177,6 +188,13 @@ input[type="search"]:focus {
 .home-tabs a:focus-visible {
 	outline: 2px solid currentColor;
 	outline-offset: 4px;
+}
+
+/* Give the tabs breathing room below the mobile header. */
+@media (max-width: 999px) {
+	.home-tabs {
+		margin-top: 1.2rem;
+	}
 }
 
 /* Keep the sticky navigation below WordPress's fixed admin toolbar. */
