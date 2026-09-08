@@ -147,9 +147,11 @@ input[type="search"]:focus {
 	flex-wrap: wrap;
 	justify-content: center;
 	position: sticky;
-	top: 0;
-	z-index: 100;
-	background: #fff;
+	top: 1.2rem;
+	/* Above posts, below Koji's mobile menu (99) and header (999). */
+	z-index: 90;
+	background: rgba(255, 255, 255, 0.92);
+	box-shadow: 0 4px 16px rgba(40, 38, 35, 0.10);
 	width: fit-content;
 	max-width: 100%;
 	border-radius: 999px;
@@ -178,10 +180,10 @@ input[type="search"]:focus {
 }
 
 /* Keep the sticky navigation below WordPress's fixed admin toolbar. */
-.admin-bar .home-tabs { top: 32px; }
+.admin-bar .home-tabs { top: calc(32px + 1.2rem); }
 @media (max-width: 782px) {
-	.admin-bar .home-tabs { top: 46px; }
+	.admin-bar .home-tabs { top: calc(46px + 1.2rem); }
 }
 @media (max-width: 600px) {
-	.admin-bar .home-tabs { top: 0; }
+	.admin-bar .home-tabs { top: 1.2rem; }
 }
