@@ -2,6 +2,14 @@
   "steps": [
     {
       "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; switch_theme('koji-d3');"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; try { require '/wordpress/d3-tests/search-previews.php'; } catch (Throwable $e) { echo $e->getMessage(); throw $e; }"
+    },
+    {
+      "step": "runPHP",
       "code": "<?php require '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/taxonomy.php'; require_once ABSPATH . 'wp-admin/includes/admin.php'; switch_theme('koji-d3'); require_once '/wordpress/wp-content/themes/koji-d3/functions.php'; require '/wordpress/d3-tests/home-tabs.php';"
     }
   ]

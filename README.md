@@ -16,7 +16,7 @@ must be installed separately for the theme to work.
 ## What this child theme changes
 
 - Site-specific layout, typography, icons, and responsive styles.
-- Homepage posts without featured images show their title and excerpt without a
+- Homepage and search posts without featured images show their title and excerpt without a
   placeholder image, including posts appended by infinite scrolling.
 - Custom footer, search form, pagination, and 404 templates.
 - Infinite scrolling that waits for genuine scroll intent, including in browser
@@ -80,7 +80,7 @@ RSS, REST, admin, search, archives, individual posts and secondary queries remai
 unchanged. No custom post type is registered.
 
 Koji's AJAX endpoint does not accept the needed category query arguments. For
-the homepage, infinite scrolling retrieves the next normal homepage
+the homepage and search results, infinite scrolling retrieves the next normal page
 HTML and extracts its post previews, retaining Koji's append/layout/focus code.
 This costs a full page render per loaded page, but uses the same main query as
 ordinary pagination and requires no additional endpoint or query per tab.
