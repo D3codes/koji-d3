@@ -88,4 +88,10 @@ if ( $query_args['max_num_pages'] > $query_args['paged'] ) :
 
 	</section><!-- .pagination-wrapper -->
 
+<?php elseif ( is_home() && ! is_feed() && koji_d3_active_home_tab() && get_previous_posts_link() ) : ?>
+
+	<nav class="home-tabs-previous mpad-d-80" aria-label="<?php esc_attr_e( 'Posts pagination', 'koji-d3' ); ?>">
+		<?php previous_posts_link( __( '&larr; Previous Page', 'koji' ) ); ?>
+	</nav>
+
 <?php endif; ?>

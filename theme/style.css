@@ -141,3 +141,49 @@ input[type="search"]:focus {
 	outline: none;
 }
 /* END - Search */
+/* Homepage category navigation */
+.home-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	position: sticky;
+	top: 1.2rem;
+	/* Above posts, below Koji's mobile menu (99) and header (999). */
+	z-index: 90;
+	background: rgba(255, 255, 255, 0.92);
+	box-shadow: 0 4px 16px rgba(40, 38, 35, 0.10);
+	width: fit-content;
+	max-width: 100%;
+	border-radius: 999px;
+	gap: 0.8rem 1rem;
+	margin: 0 auto 3rem;
+	padding: 0.8rem;
+}
+
+.home-tabs a {
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	padding: 0.6rem 1.4rem;
+	color: inherit;
+	text-decoration: none;
+	border-radius: 999px;
+}
+
+.home-tabs a[aria-current="page"],
+.home-tabs a:hover {
+	background: rgba(40, 38, 35, 0.08);
+}
+
+.home-tabs a:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 4px;
+}
+
+/* Keep the sticky navigation below WordPress's fixed admin toolbar. */
+.admin-bar .home-tabs { top: calc(32px + 1.2rem); }
+@media (max-width: 782px) {
+	.admin-bar .home-tabs { top: calc(46px + 1.2rem); }
+}
+@media (max-width: 600px) {
+	.admin-bar .home-tabs { top: 1.2rem; }
+}
