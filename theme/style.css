@@ -141,3 +141,21 @@ input[type="search"]:focus {
 	outline: none;
 }
 /* END - Search */
+/* Links and feed navigation. */
+.d3-feed-tabs { display: flex; flex-wrap: wrap; gap: 1rem; padding: 3rem 0; }
+.d3-feed-tabs a { padding: .8rem 1.6rem; border: 1px solid currentColor; border-radius: .3rem; text-decoration: none; }
+.d3-feed-tabs a[aria-current="page"] { background: #222; color: #fff; border-color: #222; }
+.d3-feed-tabs a:focus-visible, .d3-link-preview:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+.d3-link-preview { display: block; border: 1px solid #ddd; border-radius: .4rem; overflow: hidden; text-decoration: none; color: inherit; overflow-wrap: anywhere; }
+.d3-link-preview > img { display: block; width: 100%; height: auto; max-height: 48rem; object-fit: cover; }
+.d3-link-preview-text { display: block; padding: 1.8rem; }
+.d3-link-title { display: block; font-size: 2.4rem; line-height: 1.25; }
+.d3-link-source { display: block; font-size: 1.4rem; margin-top: .8rem; }
+.d3-link-description { display: block; font-size: 1.6rem; line-height: 1.5; margin-top: 1rem; }
+.d3-link-commentary { margin-bottom: 2rem; overflow-wrap: anywhere; }
+.d3-link-permalink { font-size: 1.4rem; margin-top: 1.6rem; }
+.d3-single-link .post-inner { margin: auto; padding: 4rem 2rem; }
+.d3-single-link .post-title { margin-bottom: 3rem; overflow-wrap: anywhere; }
+.d3-feed-tabs ~ .navigation.pagination { display: block; margin: 3rem 0; }
+.d3-feed-tabs ~ .navigation.pagination .page-numbers { display: inline-block; padding: 1rem; }
+.d3-link-preview > img[hidden] { display: none; }
