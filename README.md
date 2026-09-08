@@ -1,130 +1,47 @@
 # Koji D3
 
-The custom WordPress child theme used by [d3.codes](https://d3.codes/). It
-extends Koji with site-specific styles, templates, and infinite-scroll
-behavior while keeping the upstream theme as the parent.
+The custom WordPress child theme used by [d3.codes](https://d3.codes/), built on
+[Koji](https://github.com/andersnoren/koji) by [Anders Norén](https://andersnoren.se/).
+The Koji parent theme must be installed separately.
 
-## Origin and attribution
+## Features and changes
 
-Koji D3 is built on [Koji](https://github.com/andersnoren/koji), a WordPress
-theme created by [Anders Norén](https://andersnoren.se/). Koji is also
-available from the [WordPress.org theme directory](https://wordpress.org/themes/koji/).
+- Custom layout, typography, icons, responsive styles, footer, search form, and
+  404 page.
+- Homepage and search posts without featured images display text previews
+  instead of placeholder images. Both the title and excerpt link to the post.
+- Configurable homepage tabs show selected categories, all categories, or all
+  except selected categories. Add up to 20 tabs, reorder them, and choose a default.
+- Readable tab URLs use the tab name, such as `/?tab=Reading%20List`. Names must
+  be non-empty and unique, ignoring letter case. Renaming a tab changes its URL;
+  old generated-ID links still work.
+- The default tab uses the homepage URL. Unknown or deleted tab links fall back
+  to the default. Sites with a separate posts page use that page for tabs.
+- Tab filters and search queries carry through pagination and infinite scrolling.
+- Infinite scrolling waits until the visitor scrolls and keeps the homepage URL
+  stable. Newly loaded posts appear normally without automatically receiving
+  focus or a selection outline. Normal keyboard focus remains available.
+- A sticky, responsive tab bar keeps filters within reach while scrolling.
 
-This repository contains only the d3.codes child-theme customizations. Koji
-must be installed separately for the theme to work.
+## Homepage tabs
 
-## What this child theme changes
+Open **Appearance → Customize → Homepage Tabs** to add, name, reorder, or remove
+tabs. Choose **Specific categories**, **All categories**, or **All except** for
+each tab, select its categories, and check **Default tab** on the one to show
+first. Choose **Publish** to save.
 
-- Site-specific layout, typography, icons, and responsive styles.
-- Homepage and search posts without featured images show their title and excerpt without a
-  placeholder image; both the title and excerpt link to the post, including posts appended by infinite scrolling.
-- Custom footer, search form, pagination, and 404 templates.
-- Infinite scrolling that waits for genuine scroll intent, including in browser
-  windows taller than the initial page.
-- A stable homepage URL while additional posts are appended; direct paginated
-  archive URLs retain Koji's standard behavior.
+Selecting multiple categories shows posts in any of them. Excluding a category
+hides posts assigned to it, even if they also belong to another category. Select
+child categories explicitly when needed.
 
-## Repository structure
+Disable **Show homepage tab bar** or remove all tabs to restore the normal feed.
+If the default tab is removed, the first remaining tab becomes the default.
 
-```text
-theme/                         WordPress child theme
-  assets/js/                   Front-end behavior
-  functions.php                Styles and scripts registered with WordPress
-  style.css                    Theme metadata and custom styles
-.github/workflows/
-  pr-preview.yml               WordPress Playground previews for pull requests
-  deploy-production.yml        Production deployment over FTPS
-```
-
-## Local installation
+## Installation
 
 1. Install the [Koji parent theme](https://wordpress.org/themes/koji/).
-2. Copy the `theme` directory to `wp-content/themes/koji-d3` in a WordPress
-   installation.
-3. Activate **Koji D3** from **Appearance → Themes**.
-4. Set Koji's pagination type to infinite scroll if you want to exercise the
-   custom pagination behavior.
+2. Copy this repository's `theme` directory to `wp-content/themes/koji-d3`.
+3. Activate **Koji D3** under **Appearance → Themes**.
+4. Choose Koji's infinite-scroll pagination option to enable automatic loading.
 
-The child theme uses plain PHP, CSS, and JavaScript and has no separate build
-step.
-## Homepage category tabs
-
-Open **Appearance → Customize → Homepage Tabs**, leave **Show homepage tab bar**
-checked, and choose **Add tab**. Edit each name, choose **Specific categories**,
-**All categories**, or **All except**, and check the categories to include or
-exclude. Check **Default tab** on the tab that should open at the homepage URL. Only one
-tab can be selected. Use **Move up / Move down** to order tabs independently.
-Choose **Publish** to save. Remove deletes a tab from the configuration.
-
-There are no predefined tabs. Until at least one named tab is saved, the homepage
-is unchanged. Disabling the feature also restores the normal feed. The editor
-supports 20 tabs; ordering uses buttons rather than dragging, and each tab has a default checkbox. If the default is removed, the first
-remaining tab becomes the default. Category selection is hidden for All categories.
-The editor requires JavaScript; public tab navigation and pagination do not.
-
-Tab URLs use the actual name, such as `/?tab=Reading%20List`. Names must be
-non-empty and unique (ignoring letter case). Renaming a tab changes its URL.
-The default tab links to `/`. Pagination retains the name, for example
-`/page/2/?tab=Reading%20List`. Old generated-ID bookmarks still resolve.
-Invalid/deleted names fall back to the selected default. On sites with a
-static front page, tabs use the configured posts page URL.
-No permalink flush is needed.
-
-Filters use category IDs with exact selected-category matching (select child
-categories explicitly). Inclusion uses OR. Exclusion removes posts assigned to
-any checked category, even if they also belong to another category. Deleted
-categories are ignored; inclusion with no remaining categories shows Koji's
-normal empty grid. Filtered views disable sticky promotion to prevent unrelated
-posts leaking into results; All categories retains normal sticky behavior.
-RSS, REST, admin, search, archives, individual posts and secondary queries remain
-unchanged. No custom post type is registered.
-
-Koji's AJAX endpoint does not accept the needed category query arguments. For
-the homepage and search results, infinite scrolling retrieves the next normal page
-HTML and extracts its post previews, retaining Koji's append/layout/focus code.
-This costs a full page render per loaded page, but uses the same main query as
-ordinary pagination and requires no additional endpoint or query per tab.
-
-Files added:
-
-- `theme/inc/home-tabs.php`: configuration sanitization, main-query filtering,
-  semantic navigation, pagination URLs and script registration.
-- `theme/inc/customizer-home-tabs.php`: settings and repeater control registration.
-- `theme/assets/js/customizer-home-tabs.js`: add/edit/remove/reorder editor.
-- `theme/assets/css/customizer-home-tabs.css`: scoped editor styles.
-- `theme/assets/js/home-tabs.js`: next-page HTML adapter for Koji's loader.
-- `theme/home.php`: preserves Koji's homepage grid and adds navigation above it.
-- `tests/home-tabs.php`: disposable WordPress integration and PHP syntax checks.
-- `tests/blueprint.json`: Playground setup and test runner.
-
-Files modified:
-
-- `theme/functions.php`: loads the two feature modules.
-- `theme/style.css`: centered sticky navigation, oval active/hover styling matching the sidebar,
-  and keyboard focus states.
-- `theme/pagination.php`: retains a previous-page link on the last filtered page.
-- `README.md`: configuration, architecture, file inventory and verification notes.
-
-### Verification
-
-Run only against a **disposable** WordPress installation: the fixture creates
-posts/categories/pages and changes theme settings. With the Koji parent downloaded
-to `/tmp/koji-parent/koji`, run from the repository root:
-
-```sh
-npx @wp-playground/cli run-blueprint \
-  --mount=/tmp/koji-parent/koji:/wordpress/wp-content/themes/koji \
-  --mount="$PWD/theme:/wordpress/wp-content/themes/koji-d3" \
-  --mount="$PWD/tests:/wordpress/d3-tests" \
-  --blueprint=tests/blueprint.json
-node --check theme/assets/js/home-tabs.js
-node --check theme/assets/js/customizer-home-tabs.js
-git diff --check
-```
-
-The fixture checks filtering, OR/exclusion behavior, sticky isolation, page-two
-results/URLs, invalid IDs, empty/disabled settings, deleted categories,
-sanitization, static-front-page compatibility, query isolation and PHP parsing.
-For browser QA, use the same mounts with `server --port=9411` instead of
-`run-blueprint`; test Customizer edits and publication, tab navigation, browser
-history, infinite scrolling, ordinary page links and a narrow viewport.
+No separate build step is required.
