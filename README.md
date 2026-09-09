@@ -8,22 +8,18 @@ The Koji parent theme must be installed separately.
 
 - Custom layout, typography, icons, responsive styles, footer, search form, and
   404 page.
-- Consistent rounded corners on images, videos, and embedded frames, with
-  preview images and metadata icons excluded from the image rule.
+- Consistent rounded corners on images, videos, and embedded frames.
 - Homepage and search posts without featured images display text previews
-  instead of placeholder images. Both the title and excerpt link to the post.
+  instead of placeholder images.
 - Configurable homepage tabs show selected categories, all categories, or all
   except selected categories. Add up to 20 tabs, reorder them, and choose a default.
 - Readable tab URLs use the tab name, such as `/?tab=Reading%20List`. Names must
-  be non-empty and unique, ignoring letter case. Renaming a tab changes its URL;
-  old generated-ID links still work.
+  be non-empty and unique, ignoring letter case.
 - The default tab uses the homepage URL. Unknown or deleted tab links fall back
   to the default. Sites with a separate posts page use that page for tabs.
 - Tab filters and search queries carry through pagination and infinite scrolling.
 - Infinite scrolling waits until the visitor scrolls and keeps the homepage URL
-  stable. Newly loaded posts appear normally without automatically receiving
-  focus or a selection outline. Normal keyboard focus remains available.
-- A sticky, responsive tab bar keeps filters within reach while scrolling.
+  stable.
 
 ## Homepage tabs
 
