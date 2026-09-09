@@ -144,27 +144,39 @@ font-family: 'Font Awesome 6';
 	background: rgba(200, 200, 200, 0.8);
 }
 
+/* The field itself supplies the Aqua surface, without a second white capsule. */
 .search-overlay-form-wrapper {
-	background: white;
-	border-radius: 100px;
-	width: 50rem;
-	padding: 10px;
+	background: transparent;
+	width: min(56rem, calc(100% - 4rem));
+	padding: 8px;
 }
-
-.search-overlay label img {
-	width: 3.2rem;
+.search-overlay .search-form { width: 100%; }
+.search-overlay label img { width: 2.4rem; border-radius: 0; }
+body input[type="search"],
+body .search-overlay .search-field {
+	box-sizing: border-box;
+	min-width: 0;
+	min-height: 44px;
+	padding: 10px 16px;
+	border-radius: 999px;
+	font-size: 1.6rem;
+	font-weight: 400;
+	color: #1d1d1f;
+	background: rgba(242,242,244,.72) linear-gradient(to bottom, rgba(255,255,255,.22), rgba(255,255,255,0) 55%, rgba(255,255,255,.08));
+	border: 1.5px solid rgba(0,0,0,.16);
+	box-shadow: 0 1px 4px rgba(0,0,0,.10);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	-webkit-appearance: none;
+	transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
 }
-
-.search-overlay .search-field {
-	font-size: 2.4rem;
-}
-
-.search-untoggle-inner {
-	background: white;
-}
-
-input[type="search"]:focus {
+body .search-overlay .search-field { flex: 1; width: 100%; font-size: 2rem; }
+body input[type="search"]::placeholder { color: #61616a; opacity: 1; }
+body input[type="search"]:focus {
 	outline: none;
+	border-color: #0071e3;
+	background-color: rgba(255,255,255,.85);
+	box-shadow: 0 0 0 3.5px rgba(0,113,227,.4), 0 1px 4px rgba(0,0,0,.10);
 }
 /* END - Search */
 /* Homepage category navigation */
@@ -301,4 +313,49 @@ body .pagination-single .arrow img { border-radius: 0; }
 @media (prefers-reduced-motion: reduce) {
 	body .pagination-single .arrow { transition: none; }
 	body .pagination-single a:active .arrow { transform: none; }
+}
+
+/* Aqua circular search/social controls, including the overlay close surface. */
+body .social-icons :is(a, button),
+body .search-untoggle-inner {
+	border: 1px solid rgba(0,0,0,.16);
+	border-radius: 50%;
+	background: #e9e9ed linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%, rgba(255,255,255,.18));
+	color: #1d1d1f;
+	box-shadow: 0 1px 4px rgba(0,0,0,.10), inset 0 1px rgba(255,255,255,.65);
+	transition: background-color .2s ease, transform .14s ease;
+}
+body .social-icons :is(a, button):hover,
+body .search-untoggle:hover .search-untoggle-inner {
+	background-color: #d9dce2;
+	transform: none;
+	opacity: 1;
+}
+body .social-icons :is(a, button):active,
+body .social-icons button.active,
+body .search-untoggle:active .search-untoggle-inner {
+	background-color: #0066cc;
+	color: white;
+}
+body .social-icons :is(a, button):active,
+body .search-untoggle:active .search-untoggle-inner { transform: scale(.96); }
+body .social-icons :is(a, button):focus-visible,
+body .search-untoggle:focus-visible .search-untoggle-inner { outline: 2px solid #0066cc; outline-offset: 3px; }
+body .search-untoggle-inner img { border-radius: 0; }
+body .search-untoggle:active img { filter: brightness(0) invert(1); }
+@media (prefers-reduced-motion: reduce) {
+	body .social-icons :is(a, button), body .search-untoggle-inner { transition: none; }
+	body .social-icons :is(a, button):active,
+	body .search-untoggle:active .search-untoggle-inner { transform: none; }
+}
+/* Preserve Koji's background-image search glyph above the glossy layer. */
+body .social-icons .search-toggle {
+	background-image: url(../koji/assets/images/icons/spyglass-gray.svg), linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%, rgba(255,255,255,.18));
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 20px, 100% 100%;
+}
+body .social-icons .search-toggle.active,
+body .social-icons .search-toggle:active {
+	background-image: url(../koji/assets/images/icons/spyglass-white.svg), linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%, rgba(255,255,255,.18));
 }

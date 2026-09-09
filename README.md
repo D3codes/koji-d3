@@ -22,7 +22,8 @@ The Koji parent theme must be installed separately.
   stable.
 - Aqua2-inspired glossy action buttons and a sticky segmented tab bar with a
   freely draggable selection and horizontal scrolling on narrow screens.
-- Matching glossy previous/next post arrows with visible keyboard focus.
+- Matching glossy previous/next post arrows, search controls, and social buttons
+  with visible keyboard focus. Search fields use translucent Aqua pill styling.
 
 ## Homepage tabs
 
