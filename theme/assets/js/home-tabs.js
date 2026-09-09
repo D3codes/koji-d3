@@ -71,7 +71,7 @@
 	var drag = null;
 	var suppressClick = false;
 	nav.addEventListener( 'click', function( event ) {
-		if ( suppressClick ) { event.preventDefault(); suppressClick = false; return; }
+		if ( suppressClick && event.detail !== 0 ) { event.preventDefault(); suppressClick = false; return; }
 		var link = event.target.closest( 'a' );
 		if ( ! link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ) { return; }
 		event.preventDefault();
@@ -97,38 +97,56 @@
 		if ( pending || ! event.isPrimary || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ) { return; }
 		var link = event.target.closest( 'a' );
 		if ( ! link || ( event.pointerType !== 'mouse' && link !== current ) ) { return; }
-		drag = { id: event.pointerId, x: event.clientX, moved: false, link: link };
+		suppressClick = false;
+		drag = { id: event.pointerId, x: event.clientX, clientX: event.clientX, moved: false, link: link, grab: link === current ? event.clientX - current.getBoundingClientRect().left : current.offsetWidth / 2 };
+		nav.setPointerCapture( event.pointerId );
 	} );
 	nav.addEventListener( 'dragstart', function( event ) { event.preventDefault(); } );
-	nav.addEventListener( 'pointermove', function( event ) {
-		if ( ! drag || event.pointerId !== drag.id ) { return; }
-		if ( ! drag.moved && Math.abs( event.clientX - drag.x ) < 6 ) { return; }
-		drag.moved = true;
-		nav.setPointerCapture( event.pointerId );
-		nav.classList.add( 'is-dragging' );
+	var dragFrame = null;
+	function moveDrag() {
+		if ( ! drag || ! drag.moved ) { return; }
 		var bounds = nav.getBoundingClientRect();
-		if ( event.clientX < bounds.left + 28 ) { nav.scrollLeft -= 16; }
-		if ( event.clientX > bounds.right - 28 ) { nav.scrollLeft += 16; }
+		var edge = 36;
+		var speed = drag.clientX < bounds.left + edge ? -8 : ( drag.clientX > bounds.right - edge ? 8 : 0 );
+		nav.scrollLeft += speed;
+		var left = drag.clientX - track.getBoundingClientRect().left - drag.grab;
+		left = Math.max( 0, Math.min( left, track.offsetWidth - indicator.offsetWidth ) );
+		indicator.style.left = left + 'px';
+		var center = left + indicator.offsetWidth / 2;
 		drag.link = links.reduce( function( best, link ) {
-			function distance( item ) { var box = item.getBoundingClientRect(); return Math.abs( event.clientX - box.left - box.width / 2 ); }
+			function distance( item ) { return Math.abs( center - item.offsetLeft - item.offsetWidth / 2 ); }
 			return distance( link ) < distance( best ) ? link : best;
 		} );
-		position( drag.link );
+		dragFrame = requestAnimationFrame( moveDrag );
+	}
+	nav.addEventListener( 'pointermove', function( event ) {
+		if ( ! drag || event.pointerId !== drag.id ) { return; }
+		drag.clientX = event.clientX;
+		if ( drag.moved || Math.abs( event.clientX - drag.x ) < 6 ) { return; }
+		drag.moved = true;
+		nav.classList.add( 'is-dragging' );
+		moveDrag();
 	} );
 	function finish( event ) {
 		if ( ! drag || event.pointerId !== drag.id ) { return; }
 		var ended = drag;
+		cancelAnimationFrame( dragFrame );
 		drag = null;
 		nav.classList.remove( 'is-dragging' );
 		if ( nav.hasPointerCapture( event.pointerId ) ) { nav.releasePointerCapture( event.pointerId ); }
 		if ( ended.moved && event.type === 'pointerup' ) {
 			suppressClick = true;
-			window.setTimeout( function() { suppressClick = false; }, 0 );
+			// Keep suppressing the synthetic click until the next pointer gesture.
 			select( ended.link );
-		} else { position( current ); }
+		} else if ( event.type === 'pointerup' ) {
+			suppressClick = true;
+			select( ended.link );
+		} else {
+			suppressClick = true;
+			position( current );
+		}
 	}
 	nav.addEventListener( 'pointerup', finish );
 	nav.addEventListener( 'pointercancel', finish );
 	nav.addEventListener( 'lostpointercapture', finish );
-	nav.addEventListener( 'pointerleave', function() { if ( drag && ! drag.moved ) { drag = null; } } );
 }() );

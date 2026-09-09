@@ -21,7 +21,8 @@ The Koji parent theme must be installed separately.
 - Infinite scrolling waits until the visitor scrolls and keeps the homepage URL
   stable.
 - Aqua2-inspired glossy action buttons and a sticky segmented tab bar with a
-  sliding selection, drag selection, and horizontal scrolling on narrow screens.
+  freely draggable selection and horizontal scrolling on narrow screens.
+- Matching glossy previous/next post arrows with visible keyboard focus.
 
 ## Homepage tabs
 

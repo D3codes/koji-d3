@@ -216,7 +216,7 @@ input[type="search"]:focus {
 	box-shadow: 0 1px 4px rgba(0,0,0,.13), inset 0 1px rgba(255,255,255,.7);
 	color: #1d1d1f;
 }
-.home-tabs.is-enhanced a[aria-current="page"] { background: transparent; box-shadow: none; touch-action: pan-y; }
+.home-tabs.is-enhanced a[aria-current="page"] { background: transparent; box-shadow: none; touch-action: none; cursor: grab; }
 .home-tabs-indicator {
 	position: absolute;
 	z-index: -1;
@@ -226,7 +226,8 @@ input[type="search"]:focus {
 	pointer-events: none;
 	transition: left .34s cubic-bezier(.34,1.26,.64,1), width .34s cubic-bezier(.34,1.26,.64,1);
 }
-.home-tabs.is-dragging .home-tabs-indicator { opacity: .65; transition: none; }
+.home-tabs.is-dragging, .home-tabs.is-dragging a { cursor: grabbing; }
+.home-tabs.is-dragging .home-tabs-indicator { opacity: .85; transition: none; }
 .home-tabs a:focus-visible { outline: 2px solid #0066cc; outline-offset: -3px; }
 
 /* Scope the treatment to action buttons, leaving Koji's icon toggles intact. */
@@ -281,4 +282,23 @@ body :is(button:disabled, input:disabled, .faux-button.disabled, .wp-block-butto
 }
 @media (max-width: 600px) {
 	.admin-bar .home-tabs { top: 1.2rem; }
+}
+
+/* Post navigation uses the same surface on its circular arrow targets. */
+body .pagination-single .arrow {
+	width: 44px;
+	height: 44px;
+	border: 1px solid rgba(0,0,0,.16);
+	background: #e9e9ed linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%, rgba(255,255,255,.18));
+	box-shadow: 0 1px 4px rgba(0,0,0,.10), inset 0 1px rgba(255,255,255,.65);
+	transition: background-color .2s ease, transform .14s ease;
+}
+body .pagination-single a:hover .arrow { background-color: #d9dce2; }
+body .pagination-single a:active .arrow { background-color: #0066cc; transform: scale(.96); }
+body .pagination-single a:active .arrow img { filter: brightness(0) invert(1); }
+body .pagination-single a:focus-visible { outline: 2px solid #0066cc; outline-offset: 4px; border-radius: 24px; }
+body .pagination-single .arrow img { border-radius: 0; }
+@media (prefers-reduced-motion: reduce) {
+	body .pagination-single .arrow { transition: none; }
+	body .pagination-single a:active .arrow { transform: none; }
 }
