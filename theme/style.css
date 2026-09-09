@@ -168,41 +168,103 @@ input[type="search"]:focus {
 }
 /* END - Search */
 /* Homepage category navigation */
+/* Aqua2-inspired surfaces; see licenses/aqua2.txt. */
 .home-tabs {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
 	position: sticky;
 	top: 1.2rem;
-	/* Above posts, below Koji's mobile menu (99) and header (999). */
 	z-index: 90;
-	background: rgba(255, 255, 255, 0.92);
-	box-shadow: 0 4px 16px rgba(40, 38, 35, 0.10);
 	width: fit-content;
 	max-width: 100%;
-	border-radius: 999px;
-	gap: 0.8rem 1rem;
 	margin: 0 auto 3rem;
-	padding: 0.8rem;
-}
-
-.home-tabs a {
-	max-width: 100%;
-	overflow-wrap: anywhere;
-	padding: 0.6rem 1.4rem;
-	color: inherit;
-	text-decoration: none;
+	padding: 4px;
+	overflow-x: auto;
+	border: 1px solid rgba(0, 0, 0, .12);
 	border-radius: 999px;
+	background: rgba(242, 242, 244, .94);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	scrollbar-width: thin;
 }
-
+.home-tabs-track {
+	position: relative;
+	display: flex;
+	width: max-content;
+	gap: 2px;
+	isolation: isolate;
+}
+.home-tabs a {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 6px 16px;
+	border-radius: 999px;
+	color: #515158;
+	font-size: 1.5rem;
+	font-weight: 500;
+	white-space: nowrap;
+	text-decoration: none;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+.home-tabs a:hover { color: #1d1d1f; background: rgba(0, 0, 0, .04); }
 .home-tabs a[aria-current="page"],
-.home-tabs a:hover {
-	background: rgba(40, 38, 35, 0.08);
+.home-tabs-indicator {
+	background: #e1e5ee linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%, rgba(255,255,255,.18));
+	box-shadow: 0 1px 4px rgba(0,0,0,.13), inset 0 1px rgba(255,255,255,.7);
+	color: #1d1d1f;
 }
+.home-tabs.is-enhanced a[aria-current="page"] { background: transparent; box-shadow: none; touch-action: pan-y; }
+.home-tabs-indicator {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	height: 100%;
+	border-radius: 999px;
+	pointer-events: none;
+	transition: left .34s cubic-bezier(.34,1.26,.64,1), width .34s cubic-bezier(.34,1.26,.64,1);
+}
+.home-tabs.is-dragging .home-tabs-indicator { opacity: .65; transition: none; }
+.home-tabs a:focus-visible { outline: 2px solid #0066cc; outline-offset: -3px; }
 
-.home-tabs a:focus-visible {
-	outline: 2px solid currentColor;
-	outline-offset: 4px;
+/* Scope the treatment to action buttons, leaving Koji's icon toggles intact. */
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *) {
+	border: 1px solid rgba(0,0,0,.16);
+	border-radius: 999px;
+	background: #e9e9ed linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%, rgba(255,255,255,.18));
+	color: #1d1d1f;
+	box-shadow: 0 1px 4px rgba(0,0,0,.10), inset 0 1px rgba(255,255,255,.65);
+	min-height: 44px;
+	font-weight: 500;
+	text-decoration: none;
+	transition: background-color .2s ease, transform .14s ease, box-shadow .2s ease;
+}
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):hover {
+	background-color: #d9dce2;
+	opacity: 1;
+}
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):active {
+	background-color: #0066cc;
+	color: white;
+	transform: scale(.96);
+}
+body :is(button, .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):focus-visible {
+	outline: 2px solid #0066cc;
+	outline-offset: 3px;
+}
+body :is(button:disabled, input:disabled, .faux-button.disabled, .wp-block-button__link[aria-disabled="true"]):not(.toggle):not(.social-icons *) {
+	background: #eee;
+	color: #67676c;
+	box-shadow: none;
+	transform: none;
+	cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+	.home-tabs-indicator,
+	body :is(button, .faux-button, input, .wp-block-button__link, .wp-block-file__button) { transition: none !important; }
+	body :is(button, .faux-button, input, .wp-block-button__link, .wp-block-file__button):active { transform: none !important; }
 }
 
 /* Give the tabs breathing room below the mobile header. */

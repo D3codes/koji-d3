@@ -20,6 +20,8 @@ The Koji parent theme must be installed separately.
 - Tab filters and search queries carry through pagination and infinite scrolling.
 - Infinite scrolling waits until the visitor scrolls and keeps the homepage URL
   stable.
+- Aqua2-inspired glossy action buttons and a sticky segmented tab bar with a
+  sliding selection, drag selection, and horizontal scrolling on narrow screens.
 
 ## Homepage tabs
 
