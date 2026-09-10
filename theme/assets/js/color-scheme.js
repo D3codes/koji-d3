@@ -12,6 +12,15 @@
 		// Set the UA canvas directly as well as the theme's CSS selector.
 		root.style.colorScheme = dark ? 'dark' : 'light';
 		root.style.backgroundColor = dark ? '#171a20' : '';
+		// Playground keeps this iframe while replacing its WordPress document.
+		// Its default light canvas otherwise flashes between dark pages, before
+		// the next document can run this initializer. Leave other embeds alone.
+		try {
+			if (window.location.hostname === 'playground.wordpress.net' && window.frameElement && window.frameElement.id === 'wp') {
+				window.frameElement.style.colorScheme = dark ? 'dark' : 'light';
+				window.frameElement.style.backgroundColor = dark ? '#171a20' : '#f6f7f8';
+			}
+		} catch (error) { /* Cross-origin hosts control their own iframe canvas. */ }
 		document.querySelectorAll('.d3-color-toggle').forEach(function (button) {
 			button.setAttribute('aria-checked', String(dark));
 		});
