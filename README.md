@@ -4,6 +4,8 @@ The custom WordPress child theme used by [d3.codes](https://d3.codes/), built on
 [Koji](https://github.com/andersnoren/koji) by [Anders Norén](https://andersnoren.se/).
 The Koji parent theme must be installed separately.
 
+Some elements of Koji D3 are inspired by the aqua interface from OSX. Specifically thatdhruv's implementation in [Aqua 2](https://github.com/thatdhruv/aqua2).
+
 ## Features and changes
 
 - Custom layout, typography, icons, responsive styles, footer, search form, and
@@ -12,17 +14,19 @@ The Koji parent theme must be installed separately.
 - Homepage and search posts without featured images display text previews
   instead of placeholder images.
 - Configurable homepage tabs show selected categories, all categories, or all
-  except selected categories. Add up to 20 tabs, reorder them, and choose a default.
-- Readable tab URLs use the tab name, such as `/?tab=Reading%20List`. Names must
+  except selected categories.
+  - Add up to 20 tabs, reorder them, and choose a default.
+  - Readable tab URLs use the tab name, such as `/?tab=Reading%20List`. Names must
   be non-empty and unique, ignoring letter case.
-- The default tab uses the homepage URL. Unknown or deleted tab links fall back
+  - The default tab uses the homepage URL. Unknown or deleted tab links fall back
   to the default. Sites with a separate posts page use that page for tabs.
-- Tab filters and search queries carry through pagination and infinite scrolling.
+  - Tab filters and search queries carry through pagination and infinite scrolling.
 - Infinite scrolling waits until the visitor scrolls and keeps the homepage URL
   stable.
-- Aqua2-inspired graphite action buttons and a sticky segmented tab bar with a
+- Aqua-inspired UI elements
+  - Graphite action buttons and a sticky segmented tab bar with a
   freely draggable selection and horizontal scrolling on narrow screens.
-- Matching glossy previous/next post arrows, search controls, and social buttons
+  - Matching glossy previous/next post arrows, search controls, and social buttons
   with visible keyboard focus. Search fields use translucent graphite pill styling.
 
 ## Homepage tabs
