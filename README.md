@@ -89,5 +89,3 @@ canvas shows the regular image; the panel previews the alternative. Published
 images follow the visitor’s theme mode, including content loaded by infinite
 scroll. Missing alternatives, a disabled theme toggle, and JavaScript being
 unavailable all fall back to the regular image.
-
-File download blocks use a charcoal surface and matching buttons in dark mode.
