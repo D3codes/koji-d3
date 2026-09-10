@@ -51,3 +51,17 @@ If the default tab is removed, the first remaining tab becomes the default.
 4. Choose Koji's infinite-scroll pagination option to enable automatic loading.
 
 No separate build step is required.
+
+## Dark mode
+
+Enable **Appearance → Customize → Appearance → Show light/dark mode toggle**
+to show a sun/moon switch above the social icons in the desktop sidebar and
+mobile menu. It is hidden by default. Visitors initially follow their system
+color preference; choosing a mode saves it in their browser and synchronizes
+both switches and other tabs. If browser storage is unavailable, the choice
+still works for the current page. Hiding the toggle restores the existing light
+appearance. Without JavaScript the site stays light and the switch stays hidden.
+
+Dark mode uses charcoal surfaces, light text, contrasting links and focus rings,
+and matching graphite controls without altering photos or video. Author-selected
+block colors and third-party embedded content retain their own styling.
