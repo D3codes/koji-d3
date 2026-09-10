@@ -301,7 +301,7 @@ body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-bu
 	background-color: var(--d3-graphite-hover);
 	opacity: 1;
 }
-body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):active {
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):not(.d3-color-toggle):active {
 	background-color: var(--d3-graphite-pressed);
 	color: #fff;
 	transform: scale(.96);
@@ -420,6 +420,8 @@ body button.d3-color-toggle {
 	margin: 0 0 2rem;
 	min-height: 50px;
 }
+/* The segmented switch slides like the tabs instead of shrinking on press. */
+body button.d3-color-toggle:active { transform: none; }
 body button.d3-color-toggle[hidden] { display: none; }
 .d3-color-toggle::before {
 	content: "";
@@ -430,7 +432,7 @@ body button.d3-color-toggle[hidden] { display: none; }
 	border-radius: 999px;
 	background: #e3e3e6 linear-gradient(rgba(255,255,255,.55), transparent);
 	box-shadow: 0 1px 4px #0003, inset 0 1px #fffa;
-	transition: transform .2s ease;
+	transition: transform .34s cubic-bezier(.34,1.26,.64,1);
 }
 .d3-color-toggle[aria-checked="true"]::before { transform: translateX(48px); }
 .d3-color-toggle-option { display: grid; place-items: center; width: 46px; height: 42px; }
@@ -451,7 +453,8 @@ body button.d3-color-toggle[hidden] { display: none; }
 	--d3-border: #566171;
 }
 html[data-color-scheme="dark"] body { background: #171a20; color: var(--d3-text); }
-html[data-color-scheme="dark"] :is(#site-header, .mobile-menu-wrapper, .preview-wrapper, .single-container) { background: #222730; }
+html[data-color-scheme="dark"] :is(#site-header, .mobile-menu-wrapper) { background: #171a20; }
+html[data-color-scheme="dark"] :is(.preview-wrapper, .single-container) { background: #222730; }
 html[data-color-scheme="dark"] :is(.site-title a, .site-nav a, .preview-title, .preview-title a:hover, .nav-toggle label) { color: var(--d3-text); }
 html[data-color-scheme="dark"] :is(label, fieldset legend, .widget-title, .widget_recent_entries .post-date, #pagination .out-of-posts, .link-pagination a, .error404 .go-home, .site-description, .post-meta, .pagination-single a, .related-posts-title, .comment-metadata, .comment-reply-link, .leave-comment-link, .comment-reply-title small a, .comment-form p.logged-in-as, .credits, figcaption, .wp-caption-text, .widget-content, .archive-description, .comments-pagination .page-numbers, .bypostauthor .by-post-author-wrapper) { color: var(--d3-muted); }
 html[data-color-scheme="dark"] :is(.entry-content, .comment-content) a { color: #a9ceff; }
