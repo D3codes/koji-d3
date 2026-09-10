@@ -417,7 +417,10 @@ body button.d3-color-toggle {
 	isolation: isolate;
 	width: 100px;
 	padding: 3px;
-	margin: 0 0 2rem;
+	margin: 0;
+	touch-action: pan-y;
+	user-select: none;
+	cursor: grab;
 	min-height: 50px;
 }
 /* The segmented switch slides like the tabs instead of shrinking on press. */
@@ -496,3 +499,22 @@ html[data-color-scheme="dark"] body :is(button:not(.toggle):not(.search-untoggle
 	border-color: var(--d3-border);
 	box-shadow: 0 2px 5px #0004, inset 0 1px #ffffff14;
 }
+
+/* Header controls remain left aligned for every visibility combination. */
+.d3-header-toggles { display: flex; align-items: center; justify-content: flex-start; gap: 14px; margin-bottom: 2rem; }
+.d3-header-toggles > .social-icons { margin: 0; padding: 0; }
+.d3-header-toggles .search-toggle { width: 44px; height: 44px; margin: 0; }
+.d3-color-toggle.is-dragging { cursor: grabbing; }
+.d3-color-toggle.is-dragging::before { transform: translateX(var(--d3-switch-position)); transition: none; }
+.d3-color-toggle[aria-checked="false"] .d3-color-toggle-option:first-child { color: #a67b23; }
+.d3-color-toggle[aria-checked="false"]::before {
+	background: radial-gradient(ellipse at center, #f5d87855, transparent 75%), #e3e3e6 linear-gradient(#ffffff8c, transparent);
+	box-shadow: 0 1px 4px #0003, inset 0 1px #fffa, inset 0 0 10px #edc85b26;
+}
+html[data-color-scheme="dark"] .d3-color-toggle[aria-checked="true"] .d3-color-toggle-option:last-child { color: #acd2f5; }
+html[data-color-scheme="dark"] .d3-color-toggle[aria-checked="true"]::before {
+	background: radial-gradient(ellipse at center, #88bfff33, transparent 75%), #475364 linear-gradient(#ffffff14, transparent);
+	box-shadow: 0 1px 4px #0005, inset 0 1px #ffffff26, inset 0 0 10px #88bfff26;
+}
+
+.d3-color-toggle-option { pointer-events: none; }

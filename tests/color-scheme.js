@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 const source = fs.readFileSync('theme/assets/js/color-scheme.js', 'utf8');
 function setup(saved, dark, blocked = false) {
- const events = {}, buttons = [0, 1].map(() => ({ hidden: true, setAttribute(k,v) { this[k]=v; }, addEventListener(k,v) { this[k]=v; } }));
+ const events = {}, buttons = [0, 1].map(() => ({ hidden: true, classList: {add() {}, remove() {}}, style: {setProperty() {}, removeProperty() {}}, setPointerCapture() {}, hasPointerCapture() { return false; }, setAttribute(k,v) { this[k]=v; }, addEventListener(k,v) { this[k]=v; } }));
  const root = {dataset:{}};
  const system = {matches:dark, addEventListener(k,v) { this.change=v; }};
  const storage = {getItem() { if(blocked) throw Error(); return saved; }, setItem(k,v) { if(blocked) throw Error(); saved=v; }};
@@ -16,7 +16,7 @@ function setup(saved, dark, blocked = false) {
 for (const blocked of [false,true]) {
  const t=setup(null,true,blocked);
  assert.equal(t.buttons[0]['aria-checked'],'true');
- t.buttons[0].click();
+ t.buttons[0].click({detail:0});
  assert.equal(t.root.dataset.colorScheme,'light');
  assert.ok(t.buttons.every(b=>b['aria-checked']==='false' && !b.hidden));
  t.system.matches=true; t.system.change();
@@ -28,3 +28,17 @@ for (const blocked of [false,true]) {
 }
 setup('light',true); setup('dark',false); setup('invalid',false);
 console.log('Color scheme preference, synchronization and storage-failure checks passed.');
+
+const d = setup('light', false);
+const b = d.buttons[0];
+b.pointerdown({isPrimary:true, button:0, pointerId:1, clientX:0});
+b.pointermove({pointerId:1, clientX:40});
+b.pointerup({pointerId:1, type:'pointerup'});
+assert.equal(d.root.dataset.colorScheme, 'dark');
+b.click({detail:1});
+assert.equal(d.root.dataset.colorScheme, 'dark');
+b.pointerdown({isPrimary:true, button:0, pointerId:2, clientX:40});
+b.pointermove({pointerId:2, clientX:0});
+b.pointercancel({pointerId:2, type:'pointercancel'});
+assert.equal(d.root.dataset.colorScheme, 'dark');
+console.log('Drag selection, synthetic click suppression and cancellation checks passed.');

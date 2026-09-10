@@ -104,23 +104,18 @@ $html_class = is_admin_bar_showing() ? ' showing-admin-bar' : ''; ?>
 
 					<div class="social-menu-wrapper">
 
-						<?php koji_d3_color_scheme_toggle(); ?>
+						<?php koji_d3_header_toggles(); ?>
 
 						<?php
 
 						$disable_search = get_theme_mod( 'koji_disable_search' ) ? get_theme_mod( 'koji_disable_search' ) : false;
-						$show_social_menu = has_nav_menu( 'social' ) || ! $disable_search;
+						$show_social_menu = has_nav_menu( 'social' );
 
 						if ( $show_social_menu ) : ?>
 
 							<ul class="social-menu reset-list-style social-icons s-icons">
 
-								<?php if ( ! $disable_search ) : ?>
-
-									<li class="search-toggle-wrapper"><button type="button" aria-pressed="false" data-toggle-target=".search-overlay" data-set-focus=".search-overlay .search-field" class="toggle search-toggle"><span class="screen-reader-text"><?php _e( 'Toggle the search field', 'koji' ); ?></span></button></li>
-
-									<?php
-								endif;
+								<?php
 
 								$social_menu_args = array(
 									'theme_location'	=> 'social',
@@ -190,18 +185,13 @@ $html_class = is_admin_bar_showing() ? ' showing-admin-bar' : ''; ?>
 
 					<div class="social-menu-wrapper">
 
-						<?php koji_d3_color_scheme_toggle(); ?>
+						<?php koji_d3_header_toggles(); ?>
 
 						<?php if ( $show_social_menu ) : ?>
 
 							<ul class="social-menu reset-list-style social-icons s-icons mobile">
 
-								<?php if ( ! $disable_search ) : ?>
-
-									<li class="search-toggle-wrapper"><button type="button" aria-pressed="false" data-toggle-target=".search-overlay" data-set-focus=".search-overlay .search-field" class="toggle search-toggle"><span class="screen-reader-text"><?php _e( 'Toggle the search field', 'koji' ); ?></span></button></li>
-
-									<?php
-								endif;
+								<?php
 
 								wp_nav_menu( $social_menu_args ); ?>
 
