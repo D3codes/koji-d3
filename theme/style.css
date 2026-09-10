@@ -537,6 +537,11 @@ html[data-color-scheme="dark"] .d3-color-toggle[aria-checked="true"]::before {
 
 /* Match the mobile Menu/Close control to the theme's rounded buttons. */
 @media (max-width: 999px) {
+	/* Koji fixes the document but leaves its inline overflow-y scrollable. */
+	html.html-locked { overflow: hidden !important; }
+	html.html-locked body { overflow: hidden; }
+	.mobile-menu-wrapper { overscroll-behavior: contain; }
+
 	body .nav-toggle {
 		min-width: 5rem;
 		min-height: 44px;
