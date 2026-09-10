@@ -77,3 +77,17 @@ Set **Appearance → Customize → Colors → Dark mode background color** to ch
 the dark page, sidebar, and mobile menu background. The default is `#171a20`.
 The existing background selector continues to control light mode. Dark tabs and
 the search field share the same translucent surface.
+
+## Buy Me a Coffee widget
+
+The button is configured in **Appearance → Widgets → Sidebar**, independently
+of the theme. Replace the existing Buy Me a Coffee embed in its Custom HTML
+block with the complete contents of [`extras/buy-me-a-coffee.html`](extras/buy-me-a-coffee.html).
+Install the replacement when deploying this change to preserve the button sizing.
+
+The snippet applies inline styling, keeps the “Support my work” label and D3codes
+link, and updates both menu instances with the theme’s active color mode:
+charcoal with white text in light mode, pale gray with charcoal text in dark mode.
+System preference changes follow the theme; disabling the theme toggle keeps the
+button in light mode. If the external script fails, a styled support link remains.
+The snippet is not loaded by the theme; paste it into the widget once.
