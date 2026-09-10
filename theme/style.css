@@ -469,6 +469,9 @@ html[data-color-scheme="dark"] body .search-overlay .search-field {
 	color: var(--d3-text);
 	border-color: var(--d3-border);
 }
+html[data-color-scheme="dark"] body .search-overlay .search-field {
+	background-color: rgba(40, 47, 58, .65);
+}
 html[data-color-scheme="dark"] body ::placeholder { color: var(--d3-muted); opacity: 1; }
 html[data-color-scheme="dark"] body :is(button:not(.toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button, .social-icons a, .social-icons button, .search-untoggle-inner, .pagination-single .arrow, .home-tabs, .site-nav a:hover, .site-nav .current-menu-item > a, .site-nav a[aria-current="page"]) {
 	color: var(--d3-text);
