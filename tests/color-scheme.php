@@ -84,3 +84,19 @@ ob_start(); koji_d3_color_scheme_head(); $critical = ob_get_clean();
 if ( false === strpos( $critical, 'name="color-scheme"' ) || false === strpos( $critical, 'data-cfasync="false"' ) ) {
 	throw new Exception( 'Early browser scheme hint and synchronous initialization are required.' );
 }
+
+$background = $manager->get_setting( 'koji_d3_dark_background_color' );
+$control = $manager->get_control( 'koji_d3_dark_background_color' );
+if ( '#171a20' !== $background->default || ! $control instanceof WP_Customize_Color_Control || 'colors' !== $control->section || null !== $background->sanitize( 'not-a-color' ) ) {
+	throw new Exception( 'Dark background requires a validated Colors picker with the existing default.' );
+}
+set_theme_mod( 'koji_d3_show_color_toggle', true );
+foreach ( array( '#123456' => '#123456', 'invalid' => '#171a20', '' => '#171a20' ) as $saved => $expected ) {
+	set_theme_mod( 'koji_d3_dark_background_color', $saved );
+	ob_start(); koji_d3_color_scheme_head(); $head = ob_get_clean();
+	if ( false === strpos( $head, '--d3-dark-background:' . $expected . ';' ) ) {
+		throw new Exception( 'Early canvas must use the saved dark background or safe default.' );
+	}
+}
+remove_theme_mod( 'koji_d3_dark_background_color' );
+echo "Dark background picker and early canvas checks passed.\n";
