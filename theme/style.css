@@ -126,6 +126,9 @@ font-family: 'Font Awesome 6';
 /* END - Buy me coffee */
 
 /* START - Nav menu selector */
+.site-nav li + li {
+	margin-top: calc(.6em + 4px);
+}
 .site-nav a {
 	border: 1px solid transparent;
 	border-radius: 999px;
@@ -161,7 +164,7 @@ font-family: 'Font Awesome 6';
 
 /* START - Search */
 .search-overlay {
-	background: rgba(200, 200, 200, 0.06);
+	background: transparent;
 }
 
 /* The field itself supplies the Aqua surface, without a second white capsule. */
@@ -392,14 +395,17 @@ body .search-untoggle:active img { filter: brightness(0) invert(1); }
 	body .social-icons :is(a, button):active,
 	body .search-untoggle:active .search-untoggle-inner { transform: none; }
 }
-/* Preserve Koji's background-image search glyph above the glossy layer. */
-body .social-icons .search-toggle {
-	background-image: url(../koji/assets/images/icons/spyglass-gray.svg);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: 20px;
-}
+/* Tint Koji's search glyph with the same color as the social icons. */
+body .social-icons .search-toggle,
 body .social-icons .search-toggle.active,
 body .social-icons .search-toggle:active {
-	background-image: url(../koji/assets/images/icons/spyglass-white.svg);
+	background-image: none;
+}
+body .social-icons .search-toggle::before {
+	content: "";
+	width: 20px;
+	height: 20px;
+	background-color: currentColor;
+	-webkit-mask: url(../koji/assets/images/icons/spyglass-gray.svg) center / contain no-repeat;
+	mask: url(../koji/assets/images/icons/spyglass-gray.svg) center / contain no-repeat;
 }
