@@ -9,6 +9,8 @@ $html_class = is_admin_bar_showing() ? ' showing-admin-bar' : ''; ?>
 
 	<head>
 
+		<?php koji_d3_color_scheme_head(); ?>
+
 		<meta http-equiv="content-type" content="<?php bloginfo( 'html_type' ); ?>" charset="<?php bloginfo( 'charset' ); ?>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
 

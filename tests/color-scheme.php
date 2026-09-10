@@ -34,3 +34,13 @@ foreach ( array( false, true ) as $search ) {
 		}
 	}
 }
+
+$header = file_get_contents( get_stylesheet_directory() . '/header.php' );
+if ( strpos( $header, 'koji_d3_color_scheme_head();' ) > strpos( $header, 'wp_head();' ) ) {
+	throw new Exception( 'Color scheme initialization must precede wp_head assets.' );
+}
+set_theme_mod( 'koji_d3_show_color_toggle', true );
+ob_start(); koji_d3_color_scheme_head(); $critical = ob_get_clean();
+if ( false === strpos( $critical, 'name="color-scheme"' ) || false === strpos( $critical, 'data-cfasync="false"' ) ) {
+	throw new Exception( 'Early browser scheme hint and synchronous initialization are required.' );
+}

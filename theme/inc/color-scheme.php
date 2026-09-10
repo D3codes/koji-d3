@@ -18,16 +18,18 @@ function koji_d3_customize_color_scheme( $wp_customize ) {
 }
 add_action( 'customize_register', 'koji_d3_customize_color_scheme', 20 );
 
-/** Run before styles/body paint to avoid flashing the wrong saved scheme. */
+/** Called first in the head, before wp_head callbacks or external assets. */
 function koji_d3_color_scheme_head() {
 	if ( ! get_theme_mod( 'koji_d3_show_color_toggle', false ) ) {
 		return;
 	}
+	// Let the browser select a dark navigation canvas before executing JavaScript.
+	echo '<meta name="color-scheme" content="light dark">';
 	// Paint the document canvas before external styles arrive (including navigation).
 	echo '<style id="koji-d3-color-canvas">html[data-color-scheme="dark"]{color-scheme:dark;background:#171a20}html[data-color-scheme="dark"] body{background:#171a20}</style>';
-	wp_print_inline_script_tag( file_get_contents( get_stylesheet_directory() . '/assets/js/color-scheme.js' ), array( 'id' => 'koji-d3-color-scheme' ) );
+	wp_print_inline_script_tag( file_get_contents( get_stylesheet_directory() . '/assets/js/color-scheme.js' ), array( 'id' => 'koji-d3-color-scheme', 'data-cfasync' => 'false', 'data-no-optimize' => '1', 'data-no-defer' => '1' ) );
 }
-add_action( 'wp_head', 'koji_d3_color_scheme_head', 1 );
+// Deliberately not hooked to wp_head: its earlier callbacks can emit blocking assets.
 
 function koji_d3_color_scheme_toggle() {
 	if ( ! get_theme_mod( 'koji_d3_show_color_toggle', false ) ) {

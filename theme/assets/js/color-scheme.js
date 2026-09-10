@@ -9,6 +9,9 @@
 	function apply() {
 		var dark = valid(preference) ? preference === 'dark' : system.matches;
 		root.dataset.colorScheme = dark ? 'dark' : 'light';
+		// Set the UA canvas directly as well as the theme's CSS selector.
+		root.style.colorScheme = dark ? 'dark' : 'light';
+		root.style.backgroundColor = dark ? '#171a20' : '';
 		document.querySelectorAll('.d3-color-toggle').forEach(function (button) {
 			button.setAttribute('aria-checked', String(dark));
 		});
