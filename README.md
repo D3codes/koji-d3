@@ -77,3 +77,15 @@ Set **Appearance → Customize → Colors → Dark mode background color** to ch
 the dark page, sidebar, and mobile menu background. The default is `#171a20`.
 The existing background selector continues to control light mode. Dark tabs and
 the search field share the same translucent surface.
+
+Image blocks include a **Dark mode image** panel in the block settings sidebar.
+Select or upload an alternative, replace it, or remove it to use the regular
+image in both modes. Save the page to keep the selection. Use matching dimensions
+and the same subject: both variants share the block’s layout, alt text, caption,
+and link (including the original media-file/lightbox destination). The editor
+canvas shows the regular image; the panel previews the alternative. Published
+images follow the visitor’s theme mode, including content loaded by infinite
+scroll. Missing alternatives, a disabled theme toggle, and JavaScript being
+unavailable all fall back to the regular image.
+
+File download blocks use a charcoal surface and matching buttons in dark mode.

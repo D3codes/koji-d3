@@ -556,3 +556,23 @@ html[data-color-scheme="dark"] .d3-color-toggle[aria-checked="true"]::before {
 	}
 	body .nav-toggle:active { transform: scale(.96); }
 }
+
+/* Koji gives File blocks a fixed pale surface; follow the visitor's scheme. */
+html[data-color-scheme="dark"] .entry-content .wp-block-file:not(.has-background) {
+	background: #282f3a;
+	color: var(--d3-text);
+}
+html[data-color-scheme="dark"] .entry-content .wp-block-file .wp-block-file__button {
+	background: var(--d3-graphite-surface);
+	color: var(--d3-text);
+}
+html[data-color-scheme="dark"] .entry-content .wp-block-file .wp-block-file__button:hover {
+	background: var(--d3-graphite-hover);
+	opacity: 1;
+}
+html[data-color-scheme="dark"] .entry-content .wp-block-file .wp-block-file__button:active {
+	background: var(--d3-graphite-pressed);
+}
+html[data-color-scheme="dark"] .entry-content .wp-block-file a:not(.wp-block-file__button) {
+	color: #a9ceff;
+}

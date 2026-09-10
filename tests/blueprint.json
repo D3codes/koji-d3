@@ -15,6 +15,10 @@
     {
       "step": "runPHP",
       "code": "<?php require '/wordpress/wp-load.php'; require '/wordpress/d3-tests/color-scheme.php';"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; require '/wordpress/d3-tests/dark-images.php';"
     }
   ]
 }
