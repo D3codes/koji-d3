@@ -23,8 +23,10 @@ Some elements of Koji D3 are inspired by the aqua interface from OSX. Specifical
   - Tab filters and search queries carry through pagination and infinite scrolling.
 - Infinite scrolling waits until the visitor scrolls and keeps the homepage URL
   stable.
-- Optional light/dark mode toggle with a saved visitor preference, a separate dark
-  mode logo, and configurable dark background color.
+- Optional light/dark mode toggle
+  - Saved visitor preference
+  - Configurable dark background color
+  - Alternate images for light/dark mode
 - Aqua-inspired UI elements
   - Graphite action buttons and a sticky segmented tab bar with a
   freely draggable selection and horizontal scrolling on narrow screens.
