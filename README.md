@@ -23,10 +23,12 @@ Some elements of Koji D3 are inspired by the aqua interface from OSX. Specifical
   - Tab filters and search queries carry through pagination and infinite scrolling.
 - Infinite scrolling waits until the visitor scrolls and keeps the homepage URL
   stable.
+- Optional light/dark mode toggle with a saved visitor preference, a separate dark
+  mode logo, and configurable dark background color.
 - Aqua-inspired UI elements
   - Graphite action buttons and a sticky segmented tab bar with a
   freely draggable selection and horizontal scrolling on narrow screens.
-  - Matching glossy previous/next post arrows, search controls, and social buttons
+  - Matching glossy previous/next post arrows, search controls, mobile menu button, and social buttons
   with visible keyboard focus. Search fields use translucent graphite pill styling.
 
 ## Homepage tabs
@@ -70,3 +72,8 @@ appearance. Without JavaScript the site stays light and the switch stays hidden.
 Dark mode uses charcoal surfaces, light text, contrasting links and focus rings,
 and matching graphite controls without altering photos or video. Author-selected
 block colors and third-party embedded content retain their own styling.
+
+Set **Appearance → Customize → Colors → Dark mode background color** to change
+the dark page, sidebar, and mobile menu background. The default is `#171a20`.
+The existing background selector continues to control light mode. Dark tabs and
+the search field share the same translucent surface.

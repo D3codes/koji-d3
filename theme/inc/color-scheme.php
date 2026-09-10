@@ -11,6 +11,14 @@ function koji_d3_customize_color_scheme( $wp_customize ) {
 		'label' => __( 'Dark mode logo', 'koji-d3' ),
 		'description' => __( 'Optional alternative to the regular logo in dark mode. Set the regular Logo above first. If empty, the regular logo is used in both modes.', 'koji-d3' ),
 	) ) );
+	$wp_customize->add_setting( 'koji_d3_dark_background_color', array(
+		'default' => '#171a20',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'koji_d3_dark_background_color', array(
+		'section' => 'colors',
+		'label' => __( 'Dark mode background color', 'koji-d3' ),
+	) ) );
 	$section = $wp_customize->get_section( 'koji_search_options' );
 	if ( $section ) {
 		$section->title = __( 'Toggles', 'koji-d3' );
@@ -63,7 +71,8 @@ function koji_d3_color_scheme_head() {
 	// Let the browser select a dark navigation canvas before executing JavaScript.
 	echo '<meta name="color-scheme" content="light dark">';
 	// Paint the document canvas before external styles arrive (including navigation).
-	echo '<style id="koji-d3-color-canvas">html[data-color-scheme="dark"]{color-scheme:dark;background:#171a20}html[data-color-scheme="dark"] body{background:#171a20}</style>';
+	$background = sanitize_hex_color( get_theme_mod( 'koji_d3_dark_background_color', '#171a20' ) ) ?: '#171a20';
+	echo '<style id="koji-d3-color-canvas">html[data-color-scheme="dark"]{--d3-dark-background:' . esc_html( $background ) . ';color-scheme:dark;background:var(--d3-dark-background)}html[data-color-scheme="dark"] body{background:var(--d3-dark-background)}</style>';
 	wp_print_inline_script_tag( file_get_contents( get_stylesheet_directory() . '/assets/js/color-scheme.js' ), array( 'id' => 'koji-d3-color-scheme', 'data-cfasync' => 'false', 'data-no-optimize' => '1', 'data-no-defer' => '1' ) );
 }
 // Deliberately not hooked to wp_head: its earlier callbacks can emit blocking assets.
