@@ -5,6 +5,12 @@ Version: 1.0.0
 Text Domain: koji-d3
 */
 
+:root {
+	--d3-graphite-surface: rgba(242, 242, 244, .72);
+	--d3-graphite-hover: rgba(217, 220, 226, .72);
+	--d3-graphite-pressed: rgba(48, 48, 48, .72);
+}
+
 /* Consistent media corners; preview wrappers already clip their images. */
 img:not(.preview-wrapper img):not(.meta-icon img),
 iframe,
@@ -120,16 +126,30 @@ font-family: 'Font Awesome 6';
 /* END - Buy me coffee */
 
 /* START - Nav menu selector */
-.site-nav a:hover,
-.site-nav .current-menu-item > a,
-.current-menu-item > a,
-.current-page-item > a {
-	text-decoration: none;
-	background: rgba(40, 38, 35, 0.08);
-	border-radius: 20px;
+.site-nav a {
+	border: 1px solid transparent;
+	border-radius: 999px;
 	display: inline-block;
 	padding: 4px 10px;
-	margin: -4px -10px;
+	margin: -5px -11px;
+	transition: background-color .2s ease, box-shadow .2s ease;
+}
+.site-nav a:hover,
+.site-nav .current-menu-item > a,
+.site-nav .current_page_item > a,
+.site-nav a[aria-current="page"] {
+	text-decoration: none;
+	background: var(--d3-graphite-surface);
+	border-color: rgba(0,0,0,.16);
+	box-shadow: 0 1px 4px rgba(0,0,0,.10), inset 0 1px rgba(255,255,255,.65);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+}
+.site-nav a:hover { background-color: var(--d3-graphite-hover); }
+.site-nav a:active { background-color: var(--d3-graphite-pressed); color: #fff; }
+.site-nav a:focus-visible { outline: 2px solid #666666; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+	.site-nav a { transition: none; }
 }
 /* END - Nav menu selector */
 
@@ -141,68 +161,163 @@ font-family: 'Font Awesome 6';
 
 /* START - Search */
 .search-overlay {
-	background: rgba(200, 200, 200, 0.8);
+	background: rgba(200, 200, 200, 0.06);
 }
 
+/* The field itself supplies the Aqua surface, without a second white capsule. */
 .search-overlay-form-wrapper {
-	background: white;
-	border-radius: 100px;
-	width: 50rem;
-	padding: 10px;
+	background: transparent;
+	width: min(68rem, calc(100% - 3rem));
+	padding: 8px;
 }
-
-.search-overlay label img {
-	width: 3.2rem;
+.search-overlay .search-form { position: relative; width: 100%; }
+.search-overlay .search-form > label {
+	position: absolute;
+	left: 22px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 1;
+	cursor: text;
 }
-
-.search-overlay .search-field {
+.search-overlay .search-form label img {
+	width: 2.6rem;
+	height: 2.6rem;
+	margin: 0;
+	border-radius: 0;
+}
+body input[type="search"],
+body .search-overlay .search-field {
+	box-sizing: border-box;
+	min-width: 0;
+	min-height: 44px;
+	padding: 10px 16px;
+	border-radius: 999px;
+	font-size: 1.6rem;
+	font-weight: 400;
+	color: #1d1d1f;
+	background: rgba(242, 242, 244, .52);
+	border: 1px solid rgba(0,0,0,.16);
+	box-shadow: 0 1px 4px rgba(0,0,0,.10);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	-webkit-appearance: none;
+	transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+body .search-overlay .search-field {
+	flex: 1;
+	width: 100%;
+	min-height: 68px;
+	padding: 16px 24px 16px 64px;
 	font-size: 2.4rem;
 }
-
-.search-untoggle-inner {
-	background: white;
-}
-
-input[type="search"]:focus {
+body input[type="search"]::placeholder { color: #61616a; opacity: 1; }
+body input[type="search"]:focus {
 	outline: none;
+	border-color: #888888;
+	box-shadow: 0 0 0 2px rgba(136,136,136,.28), 0 1px 4px rgba(0,0,0,.10);
 }
 /* END - Search */
 /* Homepage category navigation */
+/* Aqua2-inspired surfaces; see licenses/aqua2.txt. */
 .home-tabs {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
 	position: sticky;
 	top: 1.2rem;
-	/* Above posts, below Koji's mobile menu (99) and header (999). */
 	z-index: 90;
-	background: rgba(255, 255, 255, 0.92);
-	box-shadow: 0 4px 16px rgba(40, 38, 35, 0.10);
 	width: fit-content;
 	max-width: 100%;
-	border-radius: 999px;
-	gap: 0.8rem 1rem;
 	margin: 0 auto 3rem;
-	padding: 0.8rem;
-}
-
-.home-tabs a {
-	max-width: 100%;
-	overflow-wrap: anywhere;
-	padding: 0.6rem 1.4rem;
-	color: inherit;
-	text-decoration: none;
+	padding: 4px;
+	overflow-x: auto;
+	border: 1px solid rgba(0, 0, 0, .12);
 	border-radius: 999px;
+	background: var(--d3-graphite-surface);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	scrollbar-width: thin;
 }
-
+.home-tabs-track {
+	position: relative;
+	display: flex;
+	width: max-content;
+	gap: 2px;
+	isolation: isolate;
+}
+.home-tabs a {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 6px 16px;
+	border-radius: 999px;
+	color: #515158;
+	font-size: 1.5rem;
+	font-weight: 500;
+	white-space: nowrap;
+	text-decoration: none;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+.home-tabs a:hover { color: #1d1d1f; background: rgba(0, 0, 0, .04); }
 .home-tabs a[aria-current="page"],
-.home-tabs a:hover {
-	background: rgba(40, 38, 35, 0.08);
+.home-tabs-indicator {
+	background: #e3e3e6 linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,0) 55%, rgba(255,255,255,.18));
+	box-shadow: 0 1px 4px rgba(0,0,0,.13), inset 0 1px rgba(255,255,255,.7);
+	color: #1d1d1f;
 }
+.home-tabs.is-enhanced a[aria-current="page"] { background: transparent; box-shadow: none; touch-action: none; cursor: grab; }
+.home-tabs-indicator {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	height: 100%;
+	border-radius: 999px;
+	pointer-events: none;
+	transition: left .34s cubic-bezier(.34,1.26,.64,1), width .34s cubic-bezier(.34,1.26,.64,1);
+}
+.home-tabs.is-dragging, .home-tabs.is-dragging a { cursor: grabbing; }
+.home-tabs.is-dragging .home-tabs-indicator { opacity: .85; transition: none; }
+.home-tabs a:focus-visible { outline: 2px solid #666666; outline-offset: -3px; }
 
-.home-tabs a:focus-visible {
-	outline: 2px solid currentColor;
-	outline-offset: 4px;
+/* Scope the treatment to action buttons, leaving Koji's icon toggles intact. */
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *) {
+	border: 1px solid rgba(0,0,0,.16);
+	border-radius: 999px;
+	background: var(--d3-graphite-surface);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	color: #1d1d1f;
+	box-shadow: 0 1px 4px rgba(0,0,0,.10), inset 0 1px rgba(255,255,255,.65);
+	min-height: 44px;
+	font-weight: 500;
+	text-decoration: none;
+	transition: background-color .2s ease, transform .14s ease, box-shadow .2s ease;
+}
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):hover {
+	background-color: var(--d3-graphite-hover);
+	opacity: 1;
+}
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):active {
+	background-color: var(--d3-graphite-pressed);
+	color: #fff;
+	transform: scale(.96);
+}
+body :is(button, .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):focus-visible {
+	outline: 2px solid #666666;
+	outline-offset: 3px;
+}
+body :is(button:disabled, input:disabled, .faux-button.disabled, .wp-block-button__link[aria-disabled="true"]):not(.toggle):not(.social-icons *) {
+	background: rgba(238,238,238,.72);
+	color: #67676c;
+	box-shadow: none;
+	transform: none;
+	cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+	.home-tabs-indicator,
+	body :is(button, .faux-button, input, .wp-block-button__link, .wp-block-file__button) { transition: none !important; }
+	body :is(button, .faux-button, input, .wp-block-button__link, .wp-block-file__button):active { transform: none !important; }
 }
 
 /* Give the tabs breathing room below the mobile header. */
@@ -219,4 +334,72 @@ input[type="search"]:focus {
 }
 @media (max-width: 600px) {
 	.admin-bar .home-tabs { top: 1.2rem; }
+}
+
+/* Post navigation uses the same surface on its circular arrow targets. */
+body .pagination-single .arrow {
+	width: 44px;
+	height: 44px;
+	border: 1px solid rgba(0,0,0,.16);
+	background: var(--d3-graphite-surface);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	box-shadow: 0 1px 4px rgba(0,0,0,.10), inset 0 1px rgba(255,255,255,.65);
+	transition: background-color .2s ease, transform .14s ease;
+}
+body .pagination-single a:hover .arrow { background-color: var(--d3-graphite-hover); }
+body .pagination-single a:active .arrow { background-color: var(--d3-graphite-pressed); transform: scale(.96); }
+body .pagination-single a:active .arrow img { filter: brightness(0) invert(1); }
+body .pagination-single a:focus-visible { outline: 2px solid #666666; outline-offset: 4px; border-radius: 24px; }
+body .pagination-single .arrow img { border-radius: 0; }
+@media (prefers-reduced-motion: reduce) {
+	body .pagination-single .arrow { transition: none; }
+	body .pagination-single a:active .arrow { transform: none; }
+}
+
+/* Aqua circular search/social controls, including the overlay close surface. */
+body .social-icons :is(a, button),
+body .search-untoggle-inner {
+	border: 1px solid rgba(0,0,0,.16);
+	border-radius: 50%;
+	background: var(--d3-graphite-surface);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	color: #1d1d1f;
+	box-shadow: 0 1px 4px rgba(0,0,0,.10), inset 0 1px rgba(255,255,255,.65);
+	transition: background-color .2s ease, transform .14s ease;
+}
+body .social-icons :is(a, button):hover,
+body .search-untoggle:hover .search-untoggle-inner {
+	background-color: var(--d3-graphite-hover);
+	transform: none;
+	opacity: 1;
+}
+body .social-icons :is(a, button):active,
+body .social-icons button.active,
+body .search-untoggle:active .search-untoggle-inner {
+	background-color: var(--d3-graphite-pressed);
+	color: #fff;
+}
+body .social-icons :is(a, button):active,
+body .search-untoggle:active .search-untoggle-inner { transform: scale(.96); }
+body .social-icons :is(a, button):focus-visible,
+body .search-untoggle:focus-visible .search-untoggle-inner { outline: 2px solid #666666; outline-offset: 3px; }
+body .search-untoggle-inner img { border-radius: 0; }
+body .search-untoggle:active img { filter: brightness(0) invert(1); }
+@media (prefers-reduced-motion: reduce) {
+	body .social-icons :is(a, button), body .search-untoggle-inner { transition: none; }
+	body .social-icons :is(a, button):active,
+	body .search-untoggle:active .search-untoggle-inner { transform: none; }
+}
+/* Preserve Koji's background-image search glyph above the glossy layer. */
+body .social-icons .search-toggle {
+	background-image: url(../koji/assets/images/icons/spyglass-gray.svg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 20px;
+}
+body .social-icons .search-toggle.active,
+body .social-icons .search-toggle:active {
+	background-image: url(../koji/assets/images/icons/spyglass-white.svg);
 }

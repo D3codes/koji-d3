@@ -131,12 +131,13 @@ function koji_d3_render_home_tabs() {
 	}
 	$tabs = koji_d3_home_tabs();
 	echo '<nav class="home-tabs" aria-label="' . esc_attr__( 'Post filters', 'koji-d3' ) . '">';
+	echo '<div class="home-tabs-track">';
 	$default = koji_d3_default_home_tab( $tabs );
 	foreach ( $tabs as $tab ) {
 		$url = $default['id'] === $tab['id'] ? koji_d3_home_tabs_url() : add_query_arg( 'tab', rawurlencode( $tab['label'] ), koji_d3_home_tabs_url() );
 		echo '<a href="' . esc_url( $url ) . '"' . ( $active['id'] === $tab['id'] ? ' aria-current="page"' : '' ) . '>' . esc_html( $tab['label'] ) . '</a>';
 	}
-	echo '</nav>';
+	echo '</div></nav>';
 }
 
 function koji_d3_home_tab_page_link( $url ) {
