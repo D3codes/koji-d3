@@ -490,6 +490,11 @@ html[data-color-scheme="dark"] .home-tabs.is-enhanced a[aria-current="page"] { b
 html[data-color-scheme="dark"] .nav-toggle .bar { background: var(--d3-text); }
 html[data-color-scheme="dark"] :is(.meta-icon img, .pagination-single .arrow img, .search-form label img, .search-untoggle-inner img) { filter: brightness(0) invert(.9); }
 html[data-color-scheme="dark"] body :focus-visible { outline: 2px solid #a9ceff; outline-offset: 3px; box-shadow: none; }
+html[data-color-scheme="dark"] body .search-overlay .search-field:focus {
+	outline: none;
+	box-shadow: none;
+	border-color: #888;
+}
 html[data-color-scheme="dark"] body :is(button:disabled, input:disabled, .faux-button.disabled) { background: #292e37; color: #aab1bb; box-shadow: none; }
 html[data-color-scheme="dark"] ::selection { background: #a9ceff; color: #171a20; }
 @media (forced-colors: active) {
