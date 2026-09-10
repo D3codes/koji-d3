@@ -47,15 +47,6 @@ child categories explicitly when needed.
 Disable **Show homepage tab bar** or remove all tabs to restore the normal feed.
 If the default tab is removed, the first remaining tab becomes the default.
 
-## Installation
-
-1. Install the [Koji parent theme](https://wordpress.org/themes/koji/).
-2. Copy this repository's `theme` directory to `wp-content/themes/koji-d3`.
-3. Activate **Koji D3** under **Appearance → Themes**.
-4. Choose Koji's infinite-scroll pagination option to enable automatic loading.
-
-No separate build step is required.
-
 ## Dark mode
 
 Upload an optional **Dark mode logo** under **Appearance → Customize → Site
@@ -89,3 +80,12 @@ canvas shows the regular image; the panel previews the alternative. Published
 images follow the visitor’s theme mode, including content loaded by infinite
 scroll. Missing alternatives, a disabled theme toggle, and JavaScript being
 unavailable all fall back to the regular image.
+
+## Installation
+
+1. Install the [Koji parent theme](https://wordpress.org/themes/koji/).
+2. Copy this repository's `theme` directory to `wp-content/themes/koji-d3`.
+3. Activate **Koji D3** under **Appearance → Themes**.
+4. Choose Koji's infinite-scroll pagination option to enable automatic loading.
+
+No separate build step is required.
