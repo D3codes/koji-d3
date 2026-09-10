@@ -301,7 +301,7 @@ body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-bu
 	background-color: var(--d3-graphite-hover);
 	opacity: 1;
 }
-body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):active {
+body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):not(.d3-color-toggle):active {
 	background-color: var(--d3-graphite-pressed);
 	color: #fff;
 	transform: scale(.96);
@@ -409,3 +409,120 @@ body .social-icons .search-toggle::before {
 	-webkit-mask: url(../koji/assets/images/icons/spyglass-gray.svg) center / contain no-repeat;
 	mask: url(../koji/assets/images/icons/spyglass-gray.svg) center / contain no-repeat;
 }
+
+/* Optional sun/moon switch, sharing the action-button surface. */
+body button.d3-color-toggle {
+	position: relative;
+	display: flex;
+	isolation: isolate;
+	width: 100px;
+	padding: 3px;
+	margin: 0;
+	touch-action: pan-y;
+	user-select: none;
+	cursor: grab;
+	min-height: 50px;
+}
+/* The segmented switch slides like the tabs instead of shrinking on press. */
+body button.d3-color-toggle:active { transform: none; }
+body button.d3-color-toggle[hidden] { display: none; }
+.d3-color-toggle::before {
+	content: "";
+	position: absolute;
+	inset: 3px auto 3px 3px;
+	width: 44px;
+	z-index: -1;
+	border-radius: 999px;
+	background: #e3e3e6 linear-gradient(rgba(255,255,255,.55), transparent);
+	box-shadow: 0 1px 4px #0003, inset 0 1px #fffa;
+	transition: transform .34s cubic-bezier(.34,1.26,.64,1);
+}
+.d3-color-toggle[aria-checked="true"]::before { transform: translateX(48px); }
+.d3-color-toggle-option { display: grid; place-items: center; width: 46px; height: 42px; }
+.d3-color-toggle svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+@media (prefers-reduced-motion: reduce) {
+	.d3-color-toggle::before { transition: none; }
+}
+
+/* Deliberate neutral surfaces, readable text and subdued borders. Media retain
+   their original colors; only the parent's monochrome UI glyphs are recolored. */
+:root[data-color-scheme="dark"] {
+	color-scheme: dark;
+	--d3-graphite-surface: rgba(49, 54, 63, .88);
+	--d3-graphite-hover: rgba(68, 75, 87, .94);
+	--d3-graphite-pressed: #505b6c;
+	--d3-text: #e7eaf0;
+	--d3-muted: #b3bdca;
+	--d3-border: #566171;
+}
+html[data-color-scheme="dark"] body { background: #171a20; color: var(--d3-text); }
+html[data-color-scheme="dark"] :is(#site-header, .mobile-menu-wrapper) { background: #171a20; }
+html[data-color-scheme="dark"] :is(.preview-wrapper, .single-container) { background: #222730; }
+html[data-color-scheme="dark"] :is(.site-title a, .site-nav a, .preview-title, .preview-title a:hover, .nav-toggle label) { color: var(--d3-text); }
+html[data-color-scheme="dark"] :is(label, fieldset legend, .widget-title, .widget_recent_entries .post-date, #pagination .out-of-posts, .link-pagination a, .error404 .go-home, .site-description, .post-meta, .pagination-single a, .related-posts-title, .comment-metadata, .comment-reply-link, .leave-comment-link, .comment-reply-title small a, .comment-form p.logged-in-as, .credits, figcaption, .wp-caption-text, .widget-content, .archive-description, .comments-pagination .page-numbers, .bypostauthor .by-post-author-wrapper) { color: var(--d3-muted); }
+html[data-color-scheme="dark"] :is(.entry-content, .comment-content) a { color: #a9ceff; }
+html[data-color-scheme="dark"] :is(hr, th, td, table, fieldset, blockquote, .comment-author b a, .comment-reply-link) { border-color: var(--d3-border); }
+html[data-color-scheme="dark"] :is(pre, code, kbd, samp, .wp-block-table.is-style-stripes tbody tr:nth-child(odd)) { background: #282f3a; color: var(--d3-text); }
+html[data-color-scheme="dark"] :is(input, textarea, select),
+html[data-color-scheme="dark"] body .search-overlay .search-field {
+	background-color: #282f3a;
+	color: var(--d3-text);
+	border-color: var(--d3-border);
+}
+html[data-color-scheme="dark"] body .search-overlay .search-field {
+	background-color: rgba(40, 47, 58, .65);
+}
+html[data-color-scheme="dark"] body ::placeholder { color: var(--d3-muted); opacity: 1; }
+html[data-color-scheme="dark"] body :is(button:not(.toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button, .social-icons a, .social-icons button, .search-untoggle-inner, .pagination-single .arrow, .home-tabs, .site-nav a:hover, .site-nav .current-menu-item > a, .site-nav a[aria-current="page"]) {
+	color: var(--d3-text);
+	border-color: var(--d3-border);
+	box-shadow: 0 2px 5px #0004, inset 0 1px #ffffff14;
+}
+html[data-color-scheme="dark"] .home-tabs a { color: var(--d3-muted); }
+html[data-color-scheme="dark"] .home-tabs a:hover { color: var(--d3-text); background-color: #ffffff0d; }
+html[data-color-scheme="dark"] .d3-color-toggle::before,
+html[data-color-scheme="dark"] :is(.home-tabs a[aria-current="page"], .home-tabs-indicator) {
+	background: #475364 linear-gradient(#ffffff14, transparent);
+	color: #fff;
+	box-shadow: 0 1px 4px #0005, inset 0 1px #ffffff26;
+}
+html[data-color-scheme="dark"] .home-tabs.is-enhanced a[aria-current="page"] { background: transparent; box-shadow: none; }
+html[data-color-scheme="dark"] .nav-toggle .bar { background: var(--d3-text); }
+html[data-color-scheme="dark"] :is(.meta-icon img, .pagination-single .arrow img, .search-form label img, .search-untoggle-inner img) { filter: brightness(0) invert(.9); }
+html[data-color-scheme="dark"] body :focus-visible { outline: 2px solid #a9ceff; outline-offset: 3px; box-shadow: none; }
+html[data-color-scheme="dark"] body .search-overlay .search-field:focus {
+	outline: none;
+	box-shadow: none;
+	border-color: #888;
+}
+html[data-color-scheme="dark"] body :is(button:disabled, input:disabled, .faux-button.disabled) { background: #292e37; color: #aab1bb; box-shadow: none; }
+html[data-color-scheme="dark"] ::selection { background: #a9ceff; color: #171a20; }
+@media (forced-colors: active) {
+	.d3-color-toggle::before { background: Highlight; border: 1px solid Highlight; }
+	.d3-color-toggle { border: 1px solid ButtonText; }
+}
+/* Match the specificity of the shared action-button rule. */
+html[data-color-scheme="dark"] body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *) {
+	color: var(--d3-text);
+	border-color: var(--d3-border);
+	box-shadow: 0 2px 5px #0004, inset 0 1px #ffffff14;
+}
+
+/* Header controls remain left aligned for every visibility combination. */
+.d3-header-toggles { display: flex; align-items: center; justify-content: flex-start; gap: 14px; margin-bottom: 2rem; }
+.d3-header-toggles > .social-icons { margin: 0; padding: 0; }
+.d3-header-toggles .search-toggle { width: 44px; height: 44px; margin: 0; }
+.d3-color-toggle.is-dragging { cursor: grabbing; }
+.d3-color-toggle.is-dragging::before { transform: translateX(var(--d3-switch-position)); transition: none; }
+.d3-color-toggle[aria-checked="false"] .d3-color-toggle-option:first-child { color: #a67b23; }
+.d3-color-toggle[aria-checked="false"]::before {
+	background: radial-gradient(ellipse at center, #f5d87855, transparent 75%), #e3e3e6 linear-gradient(#ffffff8c, transparent);
+	box-shadow: 0 1px 4px #0003, inset 0 1px #fffa, inset 0 0 10px #edc85b26;
+}
+html[data-color-scheme="dark"] .d3-color-toggle[aria-checked="true"] .d3-color-toggle-option:last-child { color: #acd2f5; }
+html[data-color-scheme="dark"] .d3-color-toggle[aria-checked="true"]::before {
+	background: radial-gradient(ellipse at center, #88bfff33, transparent 75%), #475364 linear-gradient(#ffffff14, transparent);
+	box-shadow: 0 1px 4px #0005, inset 0 1px #ffffff26, inset 0 0 10px #88bfff26;
+}
+
+.d3-color-toggle-option { pointer-events: none; }

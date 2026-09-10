@@ -11,6 +11,10 @@
     {
       "step": "runPHP",
       "code": "<?php require '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/taxonomy.php'; require_once ABSPATH . 'wp-admin/includes/admin.php'; switch_theme('koji-d3'); require_once '/wordpress/wp-content/themes/koji-d3/functions.php'; require '/wordpress/d3-tests/home-tabs.php';"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; require '/wordpress/d3-tests/color-scheme.php';"
     }
   ]
 }
