@@ -161,6 +161,13 @@ font-family: 'Font Awesome 6';
 	width: 100px;
 }
 /* END - Logo */
+.d3-dual-logo > .d3-logo-dark,
+html[data-color-scheme="dark"] .d3-dual-logo > .d3-logo-light {
+	display: none;
+}
+html[data-color-scheme="dark"] .d3-dual-logo > .d3-logo-dark {
+	display: block;
+}
 
 /* START - Search */
 .search-overlay {

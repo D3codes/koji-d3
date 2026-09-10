@@ -54,6 +54,11 @@ No separate build step is required.
 
 ## Dark mode
 
+Upload an optional **Dark mode logo** under **Appearance → Customize → Site
+Identity**, alongside the regular **Logo**. The regular logo is used in light
+mode and as the fallback when no dark logo is selected. Set a regular logo first.
+Both variants follow Koji's retina logo setting and switch with the color mode.
+
 Enable **Appearance → Customize → Toggles → Show light/dark mode toggle**
 to show a draggable sun/moon switch beside search, above the social icons in the desktop sidebar and
 mobile menu. It is hidden by default. Visitors initially follow their system

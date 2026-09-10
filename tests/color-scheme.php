@@ -21,6 +21,46 @@ foreach ( array( false, true ) as $enabled ) {
 }
 echo "Color scheme Customizer and rendering checks passed.\n";
 
+$logo_control = $manager->get_control( 'koji_d3_dark_logo' );
+if ( ! $logo_control instanceof WP_Customize_Media_Control || 'title_tagline' !== $logo_control->section || 'image' !== $logo_control->mime_type ) {
+	throw new Exception( 'Dark logo must be an image upload in Site Identity.' );
+}
+$logo_ids = array();
+foreach ( array( 'light', 'dark' ) as $scheme ) {
+	$id = wp_insert_attachment( array( 'post_title' => $scheme, 'post_mime_type' => 'image/png', 'guid' => 'https://example.org/' . $scheme . '.png' ) );
+	update_attached_file( $id, $scheme . '.png' );
+	wp_update_attachment_metadata( $id, array( 'width' => 400, 'height' => 200, 'file' => $scheme . '.png' ) );
+	$logo_ids[ $scheme ] = $id;
+}
+set_theme_mod( 'custom_logo', $logo_ids['light'] );
+set_theme_mod( 'koji_d3_dark_logo', $logo_ids['dark'] );
+set_theme_mod( 'koji_d3_show_color_toggle', true );
+set_theme_mod( 'koji_retina_logo', true );
+ob_start(); koji_d3_custom_logo(); $logos = ob_get_clean();
+if ( 1 !== substr_count( $logos, '<a ' ) || 2 !== substr_count( $logos, '<img ' ) || 2 !== substr_count( $logos, 'width="200" height="100"' ) || false === strpos( $logos, 'd3-logo-dark' ) ) {
+	throw new Exception( 'Both logo variants must share one home link and honor retina sizing.' );
+}
+foreach ( array( 0, 99999999 ) as $missing ) {
+	set_theme_mod( 'koji_d3_dark_logo', $missing );
+	ob_start(); koji_d3_custom_logo(); $logos = ob_get_clean();
+	if ( 1 !== substr_count( $logos, '<img ' ) || false !== strpos( $logos, 'd3-dual-logo' ) ) {
+		throw new Exception( 'Missing or deleted dark logos must fall back to the regular logo.' );
+	}
+}
+set_theme_mod( 'koji_d3_dark_logo', $logo_ids['dark'] );
+set_theme_mod( 'koji_d3_show_color_toggle', false );
+ob_start(); koji_d3_custom_logo(); $logos = ob_get_clean();
+if ( 1 !== substr_count( $logos, '<img ' ) || false !== strpos( $logos, 'd3-dual-logo' ) ) {
+	throw new Exception( 'Disabling dark mode must retain the regular logo.' );
+}
+foreach ( $logo_ids as $id ) {
+	wp_delete_attachment( $id, true );
+}
+remove_theme_mod( 'custom_logo' );
+remove_theme_mod( 'koji_d3_dark_logo' );
+remove_theme_mod( 'koji_retina_logo' );
+echo "Dark logo upload, rendering, retina, and fallback checks passed.\n";
+
 foreach ( array( false, true ) as $search ) {
 	foreach ( array( false, true ) as $color ) {
 		set_theme_mod( 'koji_disable_search', ! $search );
