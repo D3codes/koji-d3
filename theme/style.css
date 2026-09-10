@@ -8,7 +8,7 @@ Text Domain: koji-d3
 :root {
 	--d3-graphite-surface: rgba(242, 242, 244, .72);
 	--d3-graphite-hover: rgba(217, 220, 226, .72);
-	--d3-graphite-pressed: rgba(136, 136, 136, .72);
+	--d3-graphite-pressed: rgba(48, 48, 48, .72);
 }
 
 /* Consistent media corners; preview wrappers already clip their images. */
@@ -146,7 +146,7 @@ font-family: 'Font Awesome 6';
 	backdrop-filter: blur(16px);
 }
 .site-nav a:hover { background-color: var(--d3-graphite-hover); }
-.site-nav a:active { background-color: var(--d3-graphite-pressed); color: #1d1d1f; }
+.site-nav a:active { background-color: var(--d3-graphite-pressed); color: #fff; }
 .site-nav a:focus-visible { outline: 2px solid #666666; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
 	.site-nav a { transition: none; }
@@ -281,7 +281,7 @@ body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-bu
 }
 body :is(button:not(.toggle):not(.search-untoggle):not(.search-toggle), .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):not(.social-icons *):active {
 	background-color: var(--d3-graphite-pressed);
-	color: #1d1d1f;
+	color: #fff;
 	transform: scale(.96);
 }
 body :is(button, .faux-button, input[type="button"], input[type="reset"], input[type="submit"], .wp-block-button__link, .wp-block-file__button):focus-visible {
@@ -330,7 +330,7 @@ body .pagination-single .arrow {
 }
 body .pagination-single a:hover .arrow { background-color: var(--d3-graphite-hover); }
 body .pagination-single a:active .arrow { background-color: var(--d3-graphite-pressed); transform: scale(.96); }
-body .pagination-single a:active .arrow img { filter: none; }
+body .pagination-single a:active .arrow img { filter: brightness(0) invert(1); }
 body .pagination-single a:focus-visible { outline: 2px solid #666666; outline-offset: 4px; border-radius: 24px; }
 body .pagination-single .arrow img { border-radius: 0; }
 @media (prefers-reduced-motion: reduce) {
@@ -360,14 +360,14 @@ body .social-icons :is(a, button):active,
 body .social-icons button.active,
 body .search-untoggle:active .search-untoggle-inner {
 	background-color: var(--d3-graphite-pressed);
-	color: #1d1d1f;
+	color: #fff;
 }
 body .social-icons :is(a, button):active,
 body .search-untoggle:active .search-untoggle-inner { transform: scale(.96); }
 body .social-icons :is(a, button):focus-visible,
 body .search-untoggle:focus-visible .search-untoggle-inner { outline: 2px solid #666666; outline-offset: 3px; }
 body .search-untoggle-inner img { border-radius: 0; }
-body .search-untoggle:active img { filter: none; }
+body .search-untoggle:active img { filter: brightness(0) invert(1); }
 @media (prefers-reduced-motion: reduce) {
 	body .social-icons :is(a, button), body .search-untoggle-inner { transition: none; }
 	body .social-icons :is(a, button):active,
@@ -382,5 +382,5 @@ body .social-icons .search-toggle {
 }
 body .social-icons .search-toggle.active,
 body .social-icons .search-toggle:active {
-	background-image: url(../koji/assets/images/icons/spyglass-gray.svg);
+	background-image: url(../koji/assets/images/icons/spyglass-white.svg);
 }
