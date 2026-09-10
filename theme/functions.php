@@ -36,3 +36,15 @@ function koji_d3_enqueue_scroll_pagination_fix() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'koji_d3_enqueue_scroll_pagination_fix', 20 );
+
+/** Close the search view through Koji's toggle so its state stays synchronized. */
+function koji_d3_enqueue_search_overlay() {
+	wp_enqueue_script(
+		'koji-d3-search-overlay',
+		get_stylesheet_directory_uri() . '/assets/js/search-overlay.js',
+		array( 'koji_construct' ),
+		filemtime( get_stylesheet_directory() . '/assets/js/search-overlay.js' ),
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'koji_d3_enqueue_search_overlay', 20 );

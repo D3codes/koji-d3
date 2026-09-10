@@ -161,7 +161,7 @@ font-family: 'Font Awesome 6';
 
 /* START - Search */
 .search-overlay {
-	background: rgba(200, 200, 200, 0.8);
+	background: rgba(200, 200, 200, 0.06);
 }
 
 /* The field itself supplies the Aqua surface, without a second white capsule. */
