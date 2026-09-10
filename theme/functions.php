@@ -50,3 +50,5 @@ function koji_d3_enqueue_search_overlay() {
 add_action( 'wp_enqueue_scripts', 'koji_d3_enqueue_search_overlay', 20 );
 
 require_once get_stylesheet_directory() . '/inc/color-scheme.php';
+
+require_once get_stylesheet_directory() . '/inc/dark-images.php';
