@@ -1,6 +1,16 @@
 <?php
 /** Optional visitor-controlled color scheme. */
 function koji_d3_customize_color_scheme( $wp_customize ) {
+	$wp_customize->add_setting( 'koji_d3_dark_logo', array(
+		'default' => 0,
+		'sanitize_callback' => 'absint',
+	) );
+	$wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'koji_d3_dark_logo', array(
+		'section' => 'title_tagline',
+		'mime_type' => 'image',
+		'label' => __( 'Dark mode logo', 'koji-d3' ),
+		'description' => __( 'Optional alternative to the regular logo in dark mode. Set the regular Logo above first. If empty, the regular logo is used in both modes.', 'koji-d3' ),
+	) ) );
 	$section = $wp_customize->get_section( 'koji_search_options' );
 	if ( $section ) {
 		$section->title = __( 'Toggles', 'koji-d3' );
@@ -17,6 +27,33 @@ function koji_d3_customize_color_scheme( $wp_customize ) {
 	) );
 }
 add_action( 'customize_register', 'koji_d3_customize_color_scheme', 20 );
+
+/** Keep both variants in one home link; CSS follows the existing color switch. */
+function koji_d3_custom_logo() {
+	$dark_id = get_theme_mod( 'koji_d3_dark_logo' );
+	$dark = wp_get_attachment_image_src( $dark_id, 'full' );
+	if ( ! $dark || ! get_theme_mod( 'koji_d3_show_color_toggle', false ) ) {
+		koji_custom_logo();
+		return;
+	}
+	$light_id = get_theme_mod( 'custom_logo' );
+	$light = wp_get_attachment_image_src( $light_id, 'full' );
+	if ( ! $light ) {
+		koji_custom_logo();
+		return;
+	}
+	?>
+	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="custom-logo-link d3-dual-logo">
+		<?php foreach ( array( 'light' => array( $light_id, $light ), 'dark' => array( $dark_id, $dark ) ) as $scheme => $variant ) :
+			list( $id, $image ) = $variant;
+			$scale = get_theme_mod( 'koji_retina_logo' ) ? 2 : 1;
+			$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
+			?>
+			<img class="d3-logo-<?php echo esc_attr( $scheme ); ?>" src="<?php echo esc_url( $image[0] ); ?>" width="<?php echo esc_attr( floor( $image[1] / $scale ) ); ?>" height="<?php echo esc_attr( floor( $image[2] / $scale ) ); ?>" alt="<?php echo esc_attr( $alt ? $alt : get_bloginfo( 'name' ) ); ?>" />
+		<?php endforeach; ?>
+	</a>
+	<?php
+}
 
 /** Called first in the head, before wp_head callbacks or external assets. */
 function koji_d3_color_scheme_head() {

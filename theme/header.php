@@ -41,7 +41,7 @@ $html_class = is_admin_bar_showing() ? ' showing-admin-bar' : ''; ?>
 
 					if ( function_exists( 'the_custom_logo' ) && get_theme_mod( 'custom_logo' ) ) :
 
-						koji_custom_logo();
+						koji_d3_custom_logo();
 
 					elseif ( is_front_page() || is_home() ) : ?>
 
