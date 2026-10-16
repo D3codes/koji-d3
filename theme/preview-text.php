@@ -1,5 +1,5 @@
 <?php
-/** Homepage and search preview for posts without a featured image. */
+/** Shared text preview for homepage, search, and related posts without an image. */
 ?>
 <article <?php post_class( 'preview preview-' . get_post_type() . ' preview-text do-spot' ); ?> id="post-<?php the_ID(); ?>">
 	<div class="preview-wrapper">
