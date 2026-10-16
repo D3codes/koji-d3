@@ -41,4 +41,22 @@ if ( false !== strpos( $html, 'preview-text' ) ) {
 	throw new RuntimeException( 'Other preview contexts must retain the parent template.' );
 }
 echo "PASS: search text preview, search pagination, and other preview isolation\n";
+$query->is_single = true;
+// Render a preview in the same single-post context used by Koji's related loop.
+ob_start();
+get_template_part( 'preview', get_post_type() );
+$html = ob_get_clean();
+if ( false === strpos( $html, 'preview-text' ) || false === strpos( $html, 'A recognizable excerpt.' ) || false !== strpos( $html, 'preview-image' ) || false === strpos( $html, '<a class="preview-excerpt"' ) ) {
+	throw new RuntimeException( 'Related previews must reuse the linked homepage excerpt without a placeholder.' );
+}
+add_filter( 'has_post_thumbnail', '__return_true' );
+ob_start();
+get_template_part( 'preview', get_post_type() );
+$image_html = ob_get_clean();
+remove_filter( 'has_post_thumbnail', '__return_true' );
+if ( false !== strpos( $image_html, 'preview-text' ) || false === strpos( $image_html, 'preview-image' ) ) {
+	throw new RuntimeException( 'Related previews with featured images must retain the parent image preview.' );
+}
+$query->is_single = false;
+echo "PASS: related post text preview\n";
 wp_delete_post( $id, true );
